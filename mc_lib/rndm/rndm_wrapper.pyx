@@ -24,6 +24,11 @@ cdef class RndmWrapper(object):
     >>> rndm = Generator(bitgen)
     >>> rndm.uniform()
     """
+    cdef bitgen_t *rng
+    cdef long seed
+    cdef object py_gen
+    cdef double[::1] _buf
+    cdef Py_ssize_t idx
    
     def __init__(self, seed=1234, buf_size=4096, bitgen_kind=None):
         self.seed = seed
@@ -34,7 +39,8 @@ cdef class RndmWrapper(object):
 
         capsule = self.py_gen.capsule
         self.rng = <bitgen_t *>PyCapsule_GetPointer(capsule, capsule_name)
-        # TODO: check the capsule name
+        if not PyCapsule_IsValid(capsule, capsule_name):
+            raise TypeError("Invalid pointer to anon_func_state")
         
         self._buf = np.empty(buf_size, dtype='float64')
         self._fill_buffer()
