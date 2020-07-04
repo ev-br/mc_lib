@@ -3,17 +3,17 @@ cimport cython
 from cpython.pycapsule cimport PyCapsule_IsValid, PyCapsule_GetPointer
 from numpy.random cimport bitgen_t
 
-from numpy.random import PCG64
+from numpy.random import PCG64, SeedSequence
 import numpy as np
 
 cdef const char *capsule_name = "BitGenerator"
 
 cdef class RndmWrapper():
-    def __init__(self, seed=1234, buf_size=4096, bitgen_kind=None):
+    def __init__(self, seed=(1234, 0), buf_size=4096, bitgen_kind=None):
         """ Random generator wrapper class for use from Cython.
         
         Intended usage (in Cython):
-        >>> rndm = RndmWrapper(seed=1234)
+        >>> rndm = RndmWrapper(seed=(1234, 0))
         >>> rndm.uniform()
         
         This generates a single random draw, which is identical to
@@ -24,7 +24,12 @@ cdef class RndmWrapper():
         """
         if bitgen_kind is None:
             bitgen_kind = PCG64
-        py_gen = bitgen_kind(seed)
+
+        # cf Numpy-discussion list, K.~Sheppard, R.~Kern, June 29, 2020 and below
+        # https://mail.python.org/pipermail/numpy-discussion/2020-June/080794.html
+        entropy, num = seed
+        seed_seq = SeedSequence(entropy, spawn_key=(num,))
+        py_gen = bitgen_kind(seed_seq)
 
         capsule = py_gen.capsule
         self.rng = <bitgen_t *>PyCapsule_GetPointer(capsule, capsule_name)
