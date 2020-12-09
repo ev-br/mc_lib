@@ -1,3 +1,20 @@
+# Assorted small utilities for MC simulations with Cython.
+
+After
+```
+>>> pip install -e . -v
+```
+
+Can use 
+
+```
+>>> from mc_lib.lattice import get_neighbors    # for sc and other lattices
+>>> from mc_lib import RealObservable           # for statistics
+>>> from mc_lib.rndm cimport RndmWrapper        # For rndm.uniform in Cython
+```
+
+Hat tip to Jake VanderPlas for his cython_template package. 
+
 # Package Template for a Project Using Cython
 
 [![build status](http://img.shields.io/travis/jakevdp/cython_template/master.svg?style=flat)](https://travis-ci.org/jakevdp/cython_template)
