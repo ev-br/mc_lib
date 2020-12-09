@@ -11,7 +11,8 @@ def test_identical():
     cdef RndmWrapper rndm = RndmWrapper(seed=(1234567, 0))
     r = [rndm.uniform() for _ in range(15)]
 
-    bitgen = PCG64(seed=1234567)
+    seed_seq = SeedSequence(1234567, spawn_key=(0,))
+    bitgen = PCG64(seed_seq)
     gen = Generator(bitgen)
     r_np = gen.uniform(size=15)
 
@@ -26,7 +27,8 @@ def test_generators():
         rndm = RndmWrapper(seed=(12345, 0), bitgen_kind=bitgen)
         r = [rndm.uniform() for _ in range(15)]
 
-        gen = Generator(bitgen(12345))
+        seed_seq = SeedSequence(12345, spawn_key=(0,))
+        gen = Generator(bitgen(seed_seq))
         r_np = gen.uniform(size=15)
 
         assert_equal(r_np, r)

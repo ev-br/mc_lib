@@ -17,8 +17,9 @@ cdef class RndmWrapper():
         >>> rndm.uniform()
         
         This generates a single random draw, which is identical to
-        >>> from numpy.random import PCG64, Generator
-        >>> bitgen = PCG64(seed=1234)
+        >>> from numpy.random import PCG64, Generator, SeedSequence
+        >>> seed_seq = SeedSequence(1234, spawn_key=(0,))
+        >>> bitgen = PCG64(seed_seq)
         >>> rndm = Generator(bitgen)
         >>> rndm.uniform()
         """
