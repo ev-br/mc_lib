@@ -22,6 +22,14 @@ cdef class RndmWrapper():
         >>> bitgen = PCG64(seed_seq)
         >>> rndm = Generator(bitgen)
         >>> rndm.uniform()
+        
+        NB: When used from jupyter notebook's %%cython, it seems to require
+        explicit numpy include path, like so::
+        
+            np.get_include()
+                    
+            %%cython -I <copy-paste the `np.get_include() output`>
+            from cython_template.rndm cimport RndmWrapper
         """
         if bitgen_kind is None:
             bitgen_kind = PCG64

@@ -1,7 +1,7 @@
 import numpy as np
 from numpy.testing import assert_allclose
 
-from .observable import RealObservable
+from mc_lib.observable import RealObservable
 
 def test_simple():
     r = RealObservable()

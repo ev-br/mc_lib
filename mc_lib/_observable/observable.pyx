@@ -1,3 +1,8 @@
+# distutils: language = c++
+
+# hack to make cythonize detect c++
+#from libcpp.vector cimport vector
+
 from observable cimport ScalarObservable
 
 cdef class RealObservable():

@@ -1,9 +1,26 @@
+# cython: language_level=3
+
+""" This is a collection of tests to (lightly) exercise the Cython API of
+RndmWrapper. 
+
+Tests can be run two ways:
+
+- Simply importing the module 
+>>> import __check_rndm
+
+- Alternatively, there is a set of python wrappers for each of the tests here,
+see tests/test_rndm.py.
+These python wrappers are automatically discovered by pytest.
+
+The basic idea is taken from https://stackoverflow.com/questions/42259741.
+"""
+
 import numpy as np
 from numpy.random import PCG64, MT19937, Generator, SeedSequence
 from numpy.testing import assert_equal
 from pytest import raises
 
-from rndm_wrapper cimport RndmWrapper
+from mc_lib.rndm cimport RndmWrapper
 
 
 def test_identical():
@@ -60,14 +77,15 @@ def test_worker_id():
 
 
 #####################################
+if __name__ == "__main__":
 
-TESTS = [test_identical,
-         test_generators,
-         test_wrong_generator,
-         test_worker_id,
-]
+    TESTS = [test_identical,
+             test_generators,
+             test_wrong_generator,
+             test_worker_id,
+    ]
 
-for test in TESTS:
-    test()
-    print('.', end='')
-print('\n')
+    for test in TESTS:
+        test()
+        print('.', end='')
+    print('\n')
