@@ -1,4 +1,9 @@
+from observable cimport ScalarObservable
+
 cdef class RealObservable():
+
+    def __cinit__(self):
+        self._obs = ScalarObservable[double]()
 
     @property
     def mean(self):

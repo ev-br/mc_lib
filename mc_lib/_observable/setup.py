@@ -4,7 +4,8 @@ from Cython.Distutils import build_ext
 
 import numpy
 
-ext = Extension("observable", ["observable.pyx"],
+ext = Extension("observable", 
+                sources=["observable.pyx"],
                 #sources="observable.h"
                 #include_dirs=[numpy.get_include()],
                 extra_compile_args=["-std=c++11"],
