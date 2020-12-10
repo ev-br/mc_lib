@@ -29,8 +29,7 @@ jobs:
         python -m pip install numpy cython pytest
     - name: Build
       run: |
-        # stop the build if there are Python syntax errors or undefined names
         python -m pip install -e . -v
     - name: Test with pytest
       run: |
-        pytest mc_lib/tests
+        pytest mc_lib/tests -v
