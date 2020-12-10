@@ -4,12 +4,12 @@ from numpy.testing import assert_equal
 
 import pytest
 
-#from cython_template.lattices import get_neighbors
-#from .lattices._cubic import get_coord, get_site
 from mc_lib.lattices import tabulate_neighbors
 
+from mc_lib.lattices._cubic import get_coord, get_site
+from mc_lib.lattices._cubic import get_neighbors_sc
 
-@pytest.mark.xfail
+
 def test_roundtrip():
     L = (5, 5, 5)
     for site in range(L[0] * L[1] * L[2]):
@@ -19,16 +19,27 @@ def test_roundtrip():
         assert_equal(site, site1)
 
 
-@pytest.mark.xfail
 def test_coords():
-    lst = []
-    for nghb in get_neighbors(get_site((2, 2, 2), L), L):
-        lst.append("%s %s --" % (nghb, get_coord(nghb, L)))
-        #print(nghb, get_coord(nghb, L), end=" -- ")
-    result = "".join(lst)
+    L = (4, 4, 4)
+    site = get_site((2, 2, 2), L)
+    neighb_sites = get_neighbors_sc(site, L)
+    assert neighb_sites == [58, 38, 41, 43, 46, 26]
 
-    expected = " 31 [1, 1, 1] -- 32 [1, 1, 2] -- 33 [1, 1, 3] -- 36 [1, 2, 1] -- 37 [1, 2, 2] -- 38 [1, 2, 3] -- 41 [1, 3, 1] -- 42 [1, 3, 2] -- 43 [1, 3, 3] -- 56 [2, 1, 1] -- 57 [2, 1, 2] -- 58 [2, 1, 3] -- 61 [2, 2, 1] -- 62 [2, 2, 2] -- 63 [2, 2, 3] -- 66 [2, 3, 1] -- 67 [2, 3, 2] -- 68 [2, 3, 3] -- 81 [3, 1, 1] -- 82 [3, 1, 2] -- 83 [3, 1, 3] -- 86 [3, 2, 1] -- 87 [3, 2, 2] -- 88 [3, 2, 3] -- 91 [3, 3, 1] -- 92 [3, 3, 2] -- 93 [3, 3, 3] -- "
-    assert result == expected
+    coords = [tuple(get_coord(site1, L)) for site1 in neighb_sites]
+    assert_equal(sorted(coords),
+                 [(1, 2, 2), (2, 1, 2), (2, 2, 1),
+                  (2, 2, 3), (2, 3, 2), (3, 2, 2)])
+
+
+    site = get_site((3, 2, 2), L)
+    neighb_sites = get_neighbors_sc(site, L)
+    assert_equal(sorted(neighb_sites),
+                 [10, 42, 54, 57, 59, 62])
+
+    coords = [tuple(get_coord(site1, L)) for site1 in neighb_sites]
+    assert_equal(sorted(coords),
+                 [(0, 2, 2), (2, 2, 2), (3, 1, 2),
+                 (3, 2, 1), (3, 2, 3), (3, 3, 2)])
 
 
 def test_simple_cubic_2D():
