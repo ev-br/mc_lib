@@ -76,6 +76,13 @@ def test_worker_id():
     assert_equal(r_np, r)
 
 
+def test_idx_bufsize():
+    # does not segfault upon exceeding the internal buffer size 
+    cdef RndmWrapper rndm = RndmWrapper(seed=(1, 0))
+    
+    for i in range(10000):
+        rndm.uniform()
+
 #####################################
 if __name__ == "__main__":
 
