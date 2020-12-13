@@ -5,6 +5,8 @@ cdef class RndmWrapper():
         double[::1] buf
         Py_ssize_t idx
         bitgen_t *rng
+        
+        object py_gen
 
     # public
     cdef double uniform(self) nogil

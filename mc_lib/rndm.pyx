@@ -1,3 +1,5 @@
+#cython: language_level=3
+
 # Based off https://numpy.org/doc/1.18/reference/random/extending.html
 cimport cython
 from cpython.pycapsule cimport PyCapsule_IsValid, PyCapsule_GetPointer
@@ -39,10 +41,14 @@ cdef class RndmWrapper():
         entropy, num = seed
         seed_seq = SeedSequence(entropy, spawn_key=(num,))
         py_gen = bitgen_kind(seed_seq)
+        
+        # store the python object to avoid it being garbage collected
+        self.py_gen = py_gen
 
         capsule = py_gen.capsule
         self.rng = <bitgen_t *>PyCapsule_GetPointer(capsule, capsule_name)
-        # XXX: check the capsule name
+        if not PyCapsule_IsValid(capsule, capsule_name):
+            raise ValueError("Invalid pointer to anon_func_state")
 
         self.buf = np.empty(buf_size, dtype='float64')
         self._fill()
