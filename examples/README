@@ -1,0 +1,7 @@
+Simple examples of using `mc_lib` primitives.
+
+To build and run the 1D Ising example, do, e.g.
+
+> python setup.py build_ext -i
+> python -c'from cy_ising import simulate; simulate(4, 1.25, 100000)'
+
