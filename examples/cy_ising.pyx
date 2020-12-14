@@ -7,7 +7,7 @@ cimport cython
 from libc.math cimport exp, tanh
 
 from mc_lib.rndm cimport RndmWrapper
-from mc_lib.observable import RealObservable
+from mc_lib.observable cimport RealObservable
 
 
 cdef void init_spins(long[::1] spins,
@@ -94,8 +94,7 @@ def simulate(Py_ssize_t L,
         int step = 0, sweep = 0
         int i, j
         double av_en = 0., Z = 0.
-
-    ene = RealObservable()
+        RealObservable ene = RealObservable()
 
     # initialize spins
     cdef long[::1] spins =  np.empty(L, dtype=int)

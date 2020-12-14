@@ -13,9 +13,9 @@ def configuration(parent_package='', top_path=None):
     config.add_subpackage('tests')
 
     config.add_extension('observable',
-                         sources=['_observable/observable.cpp'],
+                         sources=['observable.cpp'],
                          depends=['_observable/observable.h',
-                                  '_observable/observable.pyx'],
+                                  'observable.pyx'],
                          language='c++',)
 
     # the name of the extension *must* match the .pyx name:

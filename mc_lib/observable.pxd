@@ -1,7 +1,7 @@
 from libcpp cimport bool as cpp_bool
 from libcpp.vector cimport vector
 
-cdef extern from "observable.h" namespace "mc_stats":
+cdef extern from "_observable/observable.h" namespace "mc_stats":
     cdef cppclass ScalarObservable[T]:
         ScalarObservable()
         ScalarObservable(size_t b_n_max)   # FIXME: how to use from py/cy?
