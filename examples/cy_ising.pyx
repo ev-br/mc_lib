@@ -9,7 +9,6 @@ from libc.math cimport exp, tanh
 from mc_lib.rndm cimport RndmWrapper
 from mc_lib.observable cimport RealObservable
 
-
 cdef void init_spins(long[::1] spins,
                      RndmWrapper rndm):
     # initial configuration
@@ -125,6 +124,12 @@ def simulate(Py_ssize_t L,
             print("      = ", ene.mean, '+/-', ene.errorbar)
             th = tanh(beta)
             print("      = ", -L * th * (1 + th**(L-2)) / (1 + th**L), " (exact)" )
+
+    # check the the final result agress w/ exact
+    th = tanh(beta)
+    ground_truth = -L * th * (1 + th**(L-2)) / (1 + th**L)
+    if np.abs(ground_truth - ene.mean) > ene.errorbar:
+        raise RuntimeError("did not converge")
 
 
 if __name__ == "__main__":
