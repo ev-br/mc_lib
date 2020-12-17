@@ -19,9 +19,6 @@ def test_wrong_generator():
     mod.test_wrong_generator()
 
 
-def test_worker_id():
-    mod.test_worker_id()
-
 def test_idx_bufsize():
     mod.test_idx_bufsize()
     

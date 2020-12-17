@@ -20,7 +20,7 @@ cdef class RndmWrapper():
         
         This generates a single random draw, which is identical to
         >>> from numpy.random import PCG64, Generator, SeedSequence
-        >>> seed_seq = SeedSequence(1234, spawn_key=(0,))
+        >>> seed_seq = SeedSequence((1234, 0))
         >>> bitgen = PCG64(seed_seq)
         >>> rndm = Generator(bitgen)
         >>> rndm.uniform()
@@ -38,8 +38,10 @@ cdef class RndmWrapper():
 
         # cf Numpy-discussion list, K.~Sheppard, R.~Kern, June 29, 2020 and below
         # https://mail.python.org/pipermail/numpy-discussion/2020-June/080794.html
+        # also
+        # https://mail.python.org/pipermail/numpy-discussion/2020-December/081323.html
         entropy, num = seed
-        seed_seq = SeedSequence(entropy, spawn_key=(num,))
+        seed_seq = SeedSequence((entropy, num))
         py_gen = bitgen_kind(seed_seq)
         
         # store the python object to avoid it being garbage collected

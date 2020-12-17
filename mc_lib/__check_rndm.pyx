@@ -28,7 +28,7 @@ def test_identical():
     cdef RndmWrapper rndm = RndmWrapper(seed=(1234567, 0))
     r = [rndm.uniform() for _ in range(15)]
 
-    seed_seq = SeedSequence(1234567, spawn_key=(0,))
+    seed_seq = SeedSequence((1234567, 0))
     bitgen = PCG64(seed_seq)
     gen = Generator(bitgen)
     r_np = gen.uniform(size=15)
@@ -44,7 +44,7 @@ def test_generators():
         rndm = RndmWrapper(seed=(12345, 0), bitgen_kind=bitgen)
         r = [rndm.uniform() for _ in range(15)]
 
-        seed_seq = SeedSequence(12345, spawn_key=(0,))
+        seed_seq = SeedSequence((12345, 0))
         gen = Generator(bitgen(seed_seq))
         r_np = gen.uniform(size=15)
 
@@ -63,19 +63,6 @@ def test_wrong_generator():
         RndmWrapper(bitgen_kind=fake())
 
 
-def test_worker_id():
-    cdef RndmWrapper rndm = RndmWrapper(seed=(1234567, 1))
-    r = [rndm.uniform() for _ in range(15)]
-
-    entropy = 1234567
-    seed_seq = SeedSequence(entropy).spawn(8)[1]
-    bitgen = PCG64(seed_seq)
-    gen = Generator(bitgen)
-    r_np = gen.uniform(size=15)
-
-    assert_equal(r_np, r)
-
-
 def test_idx_bufsize():
     # does not segfault upon exceeding the internal buffer size 
     cdef RndmWrapper rndm = RndmWrapper(seed=(1, 0))
@@ -89,7 +76,7 @@ if __name__ == "__main__":
     TESTS = [test_identical,
              test_generators,
              test_wrong_generator,
-             test_worker_id,
+             test_idx_bufsize,
     ]
 
     for test in TESTS:
