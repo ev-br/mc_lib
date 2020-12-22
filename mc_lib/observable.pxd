@@ -20,3 +20,4 @@ cdef class RealObservable():
     cdef ScalarObservable[double] _obs
 
     cpdef void add_measurement(self, double value)
+

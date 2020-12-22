@@ -124,6 +124,8 @@ def simulate(Py_ssize_t L,
             print("      = ", ene.mean, '+/-', ene.errorbar)
             th = tanh(beta)
             print("      = ", -L * th * (1 + th**(L-2)) / (1 + th**L), " (exact)" )
+            # uncomment to check the block stats
+            #ene.pretty_print_block_stats()
 
     # check the the final result agress w/ exact
     th = tanh(beta)

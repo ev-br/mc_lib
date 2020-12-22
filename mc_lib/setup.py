@@ -15,7 +15,7 @@ def configuration(parent_package='', top_path=None):
     config.add_extension('observable',
                          sources=['observable.cpp'],
                          depends=['_observable/observable.h',
-                                  'observable.pyx'],
+                                  'observable.pyx', 'observable.pxd'],
                          language='c++',)
 
     # the name of the extension *must* match the .pyx name:

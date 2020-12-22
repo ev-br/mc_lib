@@ -146,6 +146,18 @@ pretty_print_block_stats(const ScalarObservable<T>& obs) {
 }
 
 
+// Trampoline subroutine : Cython does not understand std::tuple.
+template<typename T>
+void
+trampoline_mrg(const ScalarObservable<T>& obs,
+               std::vector<T>& v_av,
+               std::vector<T>& v_err,
+               std::vector<T>& v_size)
+{
+    std::tie(v_av, v_err, v_size) = detail::mrg(obs.blocks());
+}
+
+
 namespace detail {
 
 /********************************************************
