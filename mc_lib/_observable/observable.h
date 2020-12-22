@@ -39,6 +39,7 @@ public:
                             _n_b_max(n_b_max) {
         _blocks.reserve(_n_b_max);
     }
+    void from_blocks(const std::vector<T>& blocks, size_t Z_b);
 
     void operator<<(T x);    // add a measurement
     T mean() const;
@@ -125,6 +126,18 @@ ScalarObservable<T>::converged() const {
     std::tie(v_av, v_err, v_size) = detail::mrg(_blocks);
     std::tie(av, err, conv) = detail::block_stats(v_av, v_err);
     return conv;
+}
+
+
+template<typename T>
+void
+ScalarObservable<T>::from_blocks(const std::vector<T>& blocks, size_t Z_b)
+{
+    this->_blocks.clear();
+    std::copy(blocks.begin(), blocks.end(), std::back_inserter(this->_blocks));
+    this->_Z_b = Z_b;
+    this->_value = 0;
+    this->_i_b = 0;
 }
 
 

@@ -5,6 +5,7 @@ cdef extern from "_observable/observable.h" namespace "mc_stats":
     cdef cppclass ScalarObservable[T]:
         ScalarObservable()
         ScalarObservable(size_t b_n_max)   # FIXME: how to use from py/cy?
+        void from_blocks(vector[T] blocks, size_t Z_b)
 
         void operator<<(T value)
         T mean() const

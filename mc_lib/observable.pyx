@@ -58,6 +58,19 @@ cdef class RealObservable():
             print(s)
         print('----')
 
+    def __getstate__(self):
+        cdef vector[double] blocks_vec = self._obs.blocks()
+        blocks_arr = np.empty(self.num_blocks, dtype=float)
+        for j in range(blocks_arr.shape[0]):
+            blocks_arr[j] = blocks_vec[j]
+        return blocks_arr, self.Z_b
+
+    def __setstate__(self, state):
+        blocks_arr, Z_b = state
+        cdef vector[double] blocks_vec;
+        for j in range(blocks_arr.shape[0]):
+            blocks_vec.push_back(blocks_arr[j])
+        self._obs.from_blocks(blocks_vec, Z_b)
 
 
 def block_stats(RealObservable obs):

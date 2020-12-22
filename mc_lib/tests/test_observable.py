@@ -1,3 +1,5 @@
+import pickle
+
 import numpy as np
 from numpy.testing import assert_allclose, assert_equal
 
@@ -48,4 +50,19 @@ def test_block_stats():
     assert_allclose(stats["mean"], expected["mean"], atol=1e-14)
     assert_allclose(stats["errorbar"], expected["errorbar"], atol=1e-14)
     assert_equal(stats["num_blocks"], expected["num_blocks"])
+
+
+def test_pickling():
+    r = RealObservable()
+    for j in range(20):
+        r.add_measurement(j)
+        
+    pickled = pickle.dumps(r)
+    unpickled = pickle.loads(pickled)
+    assert_allclose(r.mean, unpickled.mean, atol=1e-14)
+    
+    for j in range(20):
+        r.add_measurement(j+20)
+        unpickled.add_measurement(j+20)
+    assert_allclose(r.mean, unpickled.mean, atol=1e-14)
 
