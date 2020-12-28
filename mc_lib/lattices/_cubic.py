@@ -55,3 +55,5 @@ def get_neighbors_sc(site, L):
 KNOWN_CONNECTIONS = {"root-two": get_neighbors_root_two,
                      "sc" : get_neighbors_sc,}
 
+DIMENSIONS = {"root-two": 3,
+              "sc" : 3}

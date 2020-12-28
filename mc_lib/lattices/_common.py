@@ -2,10 +2,15 @@ import operator
 import numpy as np
 
 from . import _cubic
-
+from . import _triang
     
 known_connections = {}
 known_connections.update(_cubic.KNOWN_CONNECTIONS)
+known_connections.update(_triang.KNOWN_CONNECTIONS)
+
+known_dimensions = {}
+known_dimensions.update(_cubic.DIMENSIONS)
+known_dimensions.update(_triang.DIMENSIONS)
 
 
 def get_neighbors_selector(kind):
@@ -14,6 +19,14 @@ def get_neighbors_selector(kind):
         return known_connections[kind]
     except KeyError:
         raise ValueError("Unknown kind %s" % kind)
+
+
+def dimension(kind):
+    """Select a dimension of a lattice."""
+    try:
+        return known_dimensions[kind]
+    except KeyError:
+        raise ValueError("ndims: Unknown kind %s" % kind)
 
 
 def tabulate_neighbors(L, kind):
@@ -53,10 +66,11 @@ def tabulate_neighbors(L, kind):
     """
     try:
         L = operator.index(L)
-        L = (L, L, L)
+        L = (L,) * dimension(kind)
     except:
-        assert len(L) == 3
-        pass
+        # TODO: allow 2D w/ kind='sc' and L=(3, 4)
+        assert len(L) == dimension(kind)
+
 
     if callable(kind):
         get_neighbors = kind
@@ -64,7 +78,9 @@ def tabulate_neighbors(L, kind):
         get_neighbors = get_neighbors_selector(kind)
 
     # total # of sites
-    Nsite = L[0]*L[1]*L[2]
+    Nsite = 1
+    for ll in L:
+        Nsite *= ll
 
     # construct lists of neighbors for each site
     n_lst = []

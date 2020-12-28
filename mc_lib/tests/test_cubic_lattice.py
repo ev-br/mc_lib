@@ -8,6 +8,7 @@ from mc_lib.lattices import tabulate_neighbors
 
 from mc_lib.lattices._cubic import get_coord, get_site
 from mc_lib.lattices._cubic import get_neighbors_sc
+import mc_lib.lattices._triang as triang
 
 
 def test_roundtrip():
@@ -65,3 +66,56 @@ def test_simple_cubic_2D():
    
    nn1 = tabulate_neighbors((1, 4, 4), kind='sc')
    assert_equal(nn, nn1)
+
+
+def test_simple_cubic_1D():
+   nn = tabulate_neighbors((4, 1, 1), kind='sc')
+   assert_equal(nn,
+                np.array([[ 2, 1, 3],
+                          [ 2, 0, 2],
+                          [ 2, 1, 3],
+                          [ 2, 0, 2]])
+   )
+   
+   nn1 = tabulate_neighbors((1, 1, 4), kind='sc')
+   assert_equal(nn, nn1)
+
+
+####################### Triangular lattice 2D ################
+
+def test_triang_roundtrip():
+    L = (3, 3)
+    for site in range(L[0] * L[1]):
+        xyz = triang.get_coord(site, L)
+        site1 = triang.get_site(xyz, L)
+        #print(site, xyz, site1)
+        assert_equal(site, site1)
+
+
+def test_triang_coords():
+    L = (3, 3)
+    coords = {0: (0, 0), 1: (0, 1), 2: (0, 2),
+              3: (1, 0), 4: (1, 1), 5: (1, 2),
+              6: (2, 0), 7: (2, 1), 8: (2, 2),
+    }
+    
+    for site in coords:
+        assert_equal(triang.get_coord(site, L),
+                     coords[site])
+
+
+
+def test_triang_2D():
+    nn = tabulate_neighbors((3, 3), kind='triang')
+    assert_equal(nn,
+                 np.array([[6, 1, 2, 3, 4, 6, 8],  # site = 0
+                           [6, 0, 2, 4, 5, 6, 7],  #        1
+                           [6, 0, 1, 3, 5, 7, 8],  #        2
+                           [6, 0, 2, 4, 5, 6, 7],  #        3
+                           [6, 0, 1, 3, 5, 7, 8],  #        4
+                           [6, 1, 2, 3, 4, 6, 8],  #        5
+                           [6, 0, 1, 3, 5, 7, 8],  #        6
+                           [6, 1, 2, 3, 4, 6, 8],  #        7
+                           [6, 0, 2, 4, 5, 6, 7]]) #        8
+
+    )
