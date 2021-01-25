@@ -15,7 +15,7 @@ cdef class RndmWrapper():
         """ Random generator wrapper class for use from Cython.
         
         Intended usage (in Cython):
-        >>> rndm = RndmWrapper(seed=(1234, 0))
+        >>> cdef RndmWrapper rndm = RndmWrapper(seed=(1234, 0))
         >>> rndm.uniform()
         
         This generates a single random draw, which is identical to
@@ -26,12 +26,12 @@ cdef class RndmWrapper():
         >>> rndm.uniform()
         
         NB: When used from jupyter notebook's %%cython, it seems to require
-        explicit numpy include path, like so::
+        the explicit include path, like so::
         
-            np.get_include()
+            mc_lib.get_include()
                     
-            %%cython -I <copy-paste the `np.get_include() output`>
-            from cython_template.rndm cimport RndmWrapper
+            %%cython -I <copy-paste the `mc_lib.get_include() output`>
+            from mc_lib.rndm cimport RndmWrapper
         """
         if bitgen_kind is None:
             bitgen_kind = PCG64
