@@ -1,3 +1,5 @@
+# cython: language_level=3
+
 from libcpp cimport bool as cpp_bool
 from libcpp.vector cimport vector
 

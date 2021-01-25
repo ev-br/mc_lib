@@ -1,4 +1,4 @@
-# distutils: language = c++
+# cython: language_level=3
 
 # hack to make cythonize detect c++
 #from libcpp.vector cimport vector
@@ -10,7 +10,7 @@ cdef extern from "_observable/observable.h" namespace "mc_stats":
 
 import numpy as np
 
-from observable cimport ScalarObservable
+from .observable cimport ScalarObservable
 
 cdef class RealObservable():
 

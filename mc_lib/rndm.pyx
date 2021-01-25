@@ -1,4 +1,4 @@
-#cython: language_level=3
+# cython: language_level=3
 
 # Based off https://numpy.org/doc/1.18/reference/random/extending.html
 cimport cython
