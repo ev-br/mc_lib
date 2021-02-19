@@ -1,3 +1,5 @@
+# cython: language_level=3
+
 from numpy.random cimport bitgen_t
 
 cdef class RndmWrapper():
