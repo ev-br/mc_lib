@@ -1,7 +1,15 @@
-import os
+import sys
 import numpy as np
 
 PACKAGE_NAME = 'mc_lib'
+
+
+# Special dance for MacOS
+# https://github.com/cython/cython/issues/2694
+if sys.platform == "darwin":
+    extra_compile_args = ["-stdlib=libc++", "-std=c++11"]
+else:
+    extra_compile_args = []
 
 
 def configuration(parent_package='', top_path=None):
@@ -16,7 +24,9 @@ def configuration(parent_package='', top_path=None):
                          sources=['observable.cpp'],
                          depends=['_observable/observable.h',
                                   'observable.pyx', 'observable.pxd'],
-                         language='c++',)
+                         language='c++',
+                         extra_compile_args=extra_compile_args,
+    )
 
     # the name of the extension *must* match the .pyx name:
     # https://stackoverflow.com/questions/8024805
