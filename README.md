@@ -23,6 +23,9 @@ from mc_lib cimport RealObservable
 See `examples/cy_ising.pyx` for a usage example.
 
 
+Dependencies are `cython`, `numpy >= 1.19.0` (needs `np.random.Generator`)
+and `pytest` for testing.
+
 Hat tip to Jake VanderPlas for his cython_template package. 
 
 # Package Template for a Project Using Cython
