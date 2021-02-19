@@ -9,9 +9,19 @@ Can use
 
 ```
 >>> from mc_lib.lattice import get_neighbors    # for sc and other lattices
->>> from mc_lib import RealObservable           # for statistics
+>>> from mc_lib cimport RealObservable           # for statistics
 >>> from mc_lib.rndm cimport RndmWrapper        # For rndm.uniform in Cython
 ```
+
+Note that `RealObservable` uses C++ code, so you'll need to compile your
+Cython code to C++ not C. E.g. in a Jupyter notebook, use
+```
+%%cython --+
+from mc_lib cimport RealObservable
+```
+
+See `examples/cy_ising.pyx` for a usage example.
+
 
 Hat tip to Jake VanderPlas for his cython_template package. 
 
