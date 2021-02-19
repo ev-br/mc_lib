@@ -9,28 +9,34 @@ Can use
 
 ```
 >>> from mc_lib.lattice import get_neighbors    # for sc and other lattices
->>> from mc_lib cimport RealObservable           # for statistics
->>> from mc_lib.rndm cimport RndmWrapper        # For rndm.uniform in Cython
 ```
 
-Note that `RealObservable` uses C++ code, so you'll need to compile your
-Cython code to C++ not C. E.g. in a Jupyter notebook, use
+and
+
 ```
-%%cython --+
-from mc_lib cimport RealObservable
+%% cython --+
+from mc_lib cimport RealObservable          # for statistics
+from mc_lib.rndm cimport RndmWrapper        # For rndm.uniform in Cython
 ```
 
 See `examples/cy_ising.pyx` for a usage example.
 
 
+Note that `RealObservable` uses C++, so you'll need to compile your
+client Cython code to C++ not C. E.g. in a Jupyter notebook, use
+```
+%%cython --cplus
+from mc_lib cimport RealObservable
+```
+
 Dependencies are `cython`, `numpy >= 1.19.0` (needs `np.random.Generator`)
 and `pytest` for testing.
 
-Hat tip to Jake VanderPlas for his cython_template package. 
-
-
 ![linux tests](https://github.com/ev-br/mc_lib/actions/workflows/python-package.yml/badge.svg)
 ![macOS tests](https://github.com/ev-br/mc_lib/actions/workflows/macos.yml/badge.svg)
+
+
+Hat tip to Jake VanderPlas for his cython_template package. 
 
 
 # Package Template for a Project Using Cython
