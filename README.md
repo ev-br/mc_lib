@@ -28,6 +28,11 @@ and `pytest` for testing.
 
 Hat tip to Jake VanderPlas for his cython_template package. 
 
+
+![linux tests](https://github.com/ev-br/mc_lib/actions/workflows/python-package.yml/badge.svg)
+![macOS tests](https://github.com/ev-br/mc_lib/actions/workflows/macos.yml/badge.svg)
+
+
 # Package Template for a Project Using Cython
 
 [![build status](http://img.shields.io/travis/jakevdp/cython_template/master.svg?style=flat)](https://travis-ci.org/jakevdp/cython_template)
