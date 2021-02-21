@@ -14,8 +14,11 @@ mc_stats::ScalarObservable<double> obs;
 obs << 1.0 ;
 obs << 2.0 ;
 obs << 3.0;
+for (size_t j=0; j < 10000 ; ++j) {
+   obs << 1.0*j;
+}
 
-std::cout << obs.mean() << "\n";
+std::cout << obs.mean() << std::boolalpha << "  " << obs.converged()<<"\n";
 
 }
 
