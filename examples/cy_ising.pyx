@@ -121,7 +121,7 @@ def simulate(Py_ssize_t L,
         if sweep % num_prnt == 0:
             print("\n----- sweep = ", sweep, "spins = ", np.asarray(spins), "beta = ", beta)
             print("  ene = ", av_en / Z, " (naive)")
-            print("      = ", ene.mean, '+/-', ene.errorbar)
+            print("      = ", ene.mean, '+/-', ene.errorbar, ene.is_converged)
             th = tanh(beta)
             print("      = ", -L * th * (1 + th**(L-2)) / (1 + th**L), " (exact)" )
             # uncomment to check the block stats

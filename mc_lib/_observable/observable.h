@@ -20,11 +20,12 @@ namespace mc_stats {
 
 // forward declarations
 namespace detail {
-    const size_t N_B_MAX = 1000;
+    const size_t N_B_MAX = 1024;
     template<typename T> void collate(std::vector<T>& arr);
     template<typename T> std::pair<T, T> bSTAT(const std::vector<T>& blocks);
     template<typename T> std::tuple< std::vector<T>, std::vector<T>, std::vector<T> > mrg(const std::vector<T>&);
     template<typename T> std::tuple<T, T, bool> block_stats(const std::vector<T>&, const std::vector<T>);
+    template<typename T> bool stabilized(const std::vector<T>&);
 }
 
 
@@ -240,11 +241,27 @@ block_stats(const std::vector<T>& v_av, const std::vector<T> v_err) {
     T av = v_av.size() > 2 ? v_av[v_av.size() -2]
                            : v_av[0];
     T err = *std::max_element(v_err.begin(), v_err.end());
-
-    // TODO: convergence check
-    bool conv = false;
+    bool conv = stabilized(v_err);
 
     return std::tie(av, err, conv);
+}
+
+
+// convergence: check that errorbar is stabilized up to 15%.
+// skip the last entry (in case there are too few blocks there)
+template<typename T> bool stabilized(const std::vector<T>& v_err) {
+
+    if (v_err.size() < 5) {return false;}
+
+    std::vector<T> elem;
+    for (size_t j=0; j<3; j++) {
+        elem.push_back(v_err[v_err.size()-2-j]);
+    }
+    
+    T mmax = *std::max_element(elem.begin(), elem.end());
+    T mmin = *std::min_element(elem.begin(), elem.end());
+    
+    return (mmax - mmin) < 0.15*mmax;
 }
 
 
