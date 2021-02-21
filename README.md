@@ -14,7 +14,7 @@ Can use
 and
 
 ```
-%% cython --+
+%% cython --cplus
 from mc_lib cimport RealObservable          # for statistics
 from mc_lib.rndm cimport RndmWrapper        # For rndm.uniform in Cython
 ```
