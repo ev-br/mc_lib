@@ -40,6 +40,10 @@ def configuration(parent_package='', top_path=None):
                          depends=['__check_rndm.pyx'])
 
     config.add_subpackage('lattices')
+    
+    # make sure .pxd files are installed
+    config.add_data_files('rndm.pxd')
+    config.add_data_files('observable.pxd')
 
     return config
 
