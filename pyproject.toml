@@ -1,0 +1,14 @@
+[build-system]
+requires  = [
+    "wheel",
+    "setuptools",
+    "Cython>=0.29.18",
+    "numpy>=1.19.5",
+]
+
+
+[project]
+name = "mc_lib"
+dependencies  = [
+    "numpy>=1.19.1",
+]
