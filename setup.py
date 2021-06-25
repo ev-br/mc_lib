@@ -61,7 +61,7 @@ def configuration(parent_package='',top_path=None):
 
 
 def setup_package():
-    from numpy.distutils.core import setup
+    from setuptools import setup
 
     old_path = os.getcwd()
     local_path = os.path.dirname(os.path.abspath(sys.argv[0]))
@@ -92,6 +92,8 @@ def setup_package():
               license=LICENSE,
               configuration=configuration,
               package_data={PACKAGE_NAME : ["rndm.pxd"],},
+              install_requires=['numpy>=1.19.5', 'cython'],
+              setup_requires=['numpy>=1.19.5', 'cython'],
               zip_safe=False,
               classifiers=[
                 'Development Status :: 4 - Beta',
