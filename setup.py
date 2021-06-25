@@ -62,7 +62,7 @@ def configuration(parent_package='',top_path=None):
 
 def setup_package():
     from setuptools import setup
-    from numpy.distutils.core import setup.py
+    from numpy.distutils.core import setup
 
     old_path = os.getcwd()
     local_path = os.path.dirname(os.path.abspath(sys.argv[0]))
