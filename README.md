@@ -32,6 +32,9 @@ from mc_lib cimport RealObservable
 Dependencies are `cython`, `numpy >= 1.19.0` (needs `np.random.Generator`)
 and `pytest` for testing.
 
+To build on Apple M1, need `numpy >= 1.21.0` (which is the first numpy version
+to support this hardware).
+
 ![linux tests](https://github.com/ev-br/mc_lib/actions/workflows/python-package.yml/badge.svg)
 ![macOS tests](https://github.com/ev-br/mc_lib/actions/workflows/macos.yml/badge.svg)
 
