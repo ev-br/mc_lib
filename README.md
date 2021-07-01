@@ -1,11 +1,14 @@
 # Assorted small utilities for MC simulations with Cython.
 
-After
+### Installation
+
 ```
->>> pip install -e . -v
+  pip install git+https://github.com/ev-br/mc_lib.git
 ```
 
-Can use 
+on Windows `msvcompiler` need to be installed 
+  
+### Usage 
 
 ```
 >>> from mc_lib.lattice import get_neighbors    # for sc and other lattices
