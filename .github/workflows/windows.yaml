@@ -29,7 +29,6 @@ jobs:
         python -m pip install numpy cython pytest
     - name: Build
       run: |
-        clang --version
         python -m pip install git+https://github.com/ev-br/mc_lib.git
     - name: Test with pytest
       run: |
