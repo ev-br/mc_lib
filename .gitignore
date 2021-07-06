@@ -11,6 +11,8 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
+/venv/
+../venv/
 build/
 develop-eggs/
 dist/
@@ -67,3 +69,12 @@ target/
 *~
 \#*
 cythonize.dat
+
+
+# PyCharm IDE's files
+/.idea
+
+# Build Files
+/pckg/b
+/pckg/in
+/tests/q
