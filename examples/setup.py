@@ -20,7 +20,7 @@ ext = Extension("cy_ising", ["cy_ising.pyx"],
                                 mc_lib.get_include()],
                 language='c++',
                 extra_compile_args=extra_compile_args,
-      )
+                )
 
 setup(ext_modules=[ext],
       cmdclass = {'build_ext': build_ext})

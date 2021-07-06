@@ -5,7 +5,8 @@ to exercise the Cython API. Here we add python wrappers so that pytest collects
 finds them. 
 
 """
-import mc_lib.__check_rndm as mod
+from mc_lib.tests import __check_rndm as mod
+
 
 def test_identical():
     mod.test_identical()
