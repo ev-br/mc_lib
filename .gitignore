@@ -76,5 +76,7 @@ cythonize.dat
 
 # Build Files
 /pckg/b
+/pckg/build
 /pckg/in
+/pckg/instaldir
 /tests/q
