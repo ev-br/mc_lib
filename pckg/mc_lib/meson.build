@@ -1,16 +1,5 @@
 install_dir = 'mc_lib'
 
-#_rndm_pxd = custom_target('_rndm_pxd',
-#  output : 'rndm.pxd',
-#  input : 'rndm.pxd',
-#  command : ['cp', '@INPUT@', '@OUTDIR@'],
-#)
-
-#cython_rndm_pxd = declare_dependency(sources: _rndm_pxd)
-
-# need to test without _rndm_pxd dependency, idk:
-# dependencies : [py3_dep, cython_rndm_pxd],
-
 py3.extension_module(
   'rndm', 'rndm.pyx',
   include_directories: inc_np,
@@ -36,6 +25,7 @@ py3.extension_module(
 
 pydir = meson.current_build_dir()
 
+
 python_sources = [
     '__init__.py',
     'rndm.pxd',
@@ -48,6 +38,8 @@ py3.install_sources(
     subdir: install_dir
 )
 
-subdir('__check_build')
 subdir('lattices')
 subdir('tests')
+#subdir('__check_build')
+
+

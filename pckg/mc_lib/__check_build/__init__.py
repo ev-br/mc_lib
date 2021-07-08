@@ -52,6 +52,7 @@ def raise_build_error(e):
                                             package=PACKAGE_NAME,
                                             msg=msg))
 
+
 try:
     from ._check_build import check_build
 except ImportError as e:

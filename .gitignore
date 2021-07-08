@@ -79,4 +79,6 @@ cythonize.dat
 /pckg/build
 /pckg/installdir
 /pckg/in
+/pckg/inc
 /tests/q
+Ideas
