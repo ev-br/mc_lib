@@ -1,6 +1,6 @@
 project(
   'mc_lib',
-  ['c', 'cython'],
+  ['c', 'cpp', 'cython'],
   default_options : ['warning_level=3'],
   version: '0.2',
   license: 'BSD-2',
