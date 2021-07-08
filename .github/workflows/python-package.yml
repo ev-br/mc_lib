@@ -40,5 +40,5 @@ jobs:
 
         # also check that the 2D triangular Ising example runs
         pip install jupyter
-        ipython -c"%run examples/frustrated_2d_ising.ipynb"
+        ipython -c"%run frustrated_2d_ising.ipynb"
 
