@@ -38,3 +38,7 @@ jobs:
         python setup.py build_ext --inplace
         python -c'from cy_ising import simulate; simulate(4, 1.25, 20000)'
 
+        # also check that the 2D triangular Ising example runs
+        pip install jupyter
+        ipython -c"%run frustrated_2d_ising.ipynb"
+
