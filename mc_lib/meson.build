@@ -1,33 +1,72 @@
-project(
-  'mc_lib',
-  ['c', 'cpp', 'cython'],
-  default_options : ['warning_level=3'],
-  version: '0.2',
-  license: 'BSD-2',
-  meson_version: '>= 0.54',
+install_dir = 'mc_lib'
+
+_rndm_pxd = custom_target('_rndm_pxd',
+  output : 'rndm.pxd',
+  input : 'rndm.pxd',
+  command : ['cp', '@INPUT@', '@OUTDIR@'],
 )
 
-if meson.backend() != 'ninja'
-  error('MESON_SKIP_TEST: Ninja backend required')
-endif
+cython_rndm_pxd = declare_dependency(sources: _rndm_pxd)
 
-cython = find_program('cython', required : true)
-if not cython.found()
-  error('MESON_BUILD_FAILED: Cython3 not found.')
-endif
+_rndm_cpp = custom_target('rndm_cpp',
+  output : 'rndm.cpp',
+  input : 'rndm.pyx',
+  command : [cython, '--cplus', '-3', '--fast-fail', '@INPUT@', '-o', '@OUTPUT@']
+)
+
+py3.extension_module(
+  'rndm', _rndm_cpp,
+  include_directories: inc_np,
+  dependencies : py3_dep,
+  install: true,
+  subdir: install_dir
+)
+
+_observable_cpp = custom_target('observable_cpp',
+  output : 'observable.cpp',
+  input : 'observable.pyx',
+  command : [cython, '--cplus', '-3', '--fast-fail', '@INPUT@', '-o', '@OUTPUT@']
+)
+
+py3.extension_module(
+  'observable', _observable_cpp,
+  include_directories: inc_np,
+  dependencies : [py3_dep],
+  install: true,
+  subdir: install_dir
+)
+
+_check_rndm_cpp = custom_target('check_rndm_cpp',
+  output : '__check_rndm.cpp',
+  input : '__check_rndm.pyx',
+  command : [cython, '--cplus', '-3', '--fast-fail', '@INPUT@', '-o', '@OUTPUT@']
+)
+
+py3.extension_module(
+  '__check_rndm', _check_rndm_cpp,
+  include_directories: inc_np,
+  dependencies : py3_dep,
+  install: true,
+  subdir: install_dir
+)
+
+pydir = meson.current_build_dir()
 
 
-py_mod = import('python')
-py3 = py_mod.find_installation()
-py3_dep = py3.dependency()
+python_sources = [
+    '__init__.py',
+    'rndm.pxd',
+    'observable.pxd',
+]
 
-# Thx rgommers "https://github.com/rgommers/scipy/blob/meson/scipy/meson.build"
-# NumPy include directory - needed in all submodules
-incdir_numpy = run_command(py3,
-  ['-c', 'import os; os.chdir(".."); import numpy; print(numpy.get_include())'],
-  check : true
-).stdout().strip()
+py3.install_sources(
+    python_sources,
+    pure: false,
+    subdir: install_dir
+)
 
-inc_np = include_directories(incdir_numpy)
+subdir('lattices')
+subdir('tests')
+#subdir('__check_build')
 
-subdir('mc_lib')
+
