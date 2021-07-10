@@ -17,9 +17,9 @@ Thx to Ralf Gommers
    and a local install under `installdir/` and then build:
 
 5. ```meson setup build --prefix=$PWD/installdir```
-6. ```meson compile -C build```
-7. ```meson install -C build```
-8. ```export PYTHONPATH=$PWD/pckg/installdir/lib/python3.8/site-packages/```
+6. ```meson install -C build``` It will done both commands: compile and install
+
+7. ```export PYTHONPATH=$PWD/pckg/installdir/lib/python3.8/site-packages/```
    
 8.  Pure python :```python -c "from mc_lib.tests.test_cubic_lattice import test_roundtrip; test_roundtrip"```
 

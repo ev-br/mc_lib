@@ -75,10 +75,10 @@ cythonize.dat
 /.idea
 
 # Build Files
-/pckg/b
-/pckg/installdir
-/pckg/build
-/pckg/in
-/pckg/inc
+/mc_lib/b
+/mc_lib/installdir
+/mc_lib/build
+/mc_lib/in
+/mc_lib/inc
 /tests/q
 Ideas
