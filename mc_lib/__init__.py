@@ -14,7 +14,7 @@ __version__ = "0.2"
 # from . import __check_build
 
 
-# def get_include():
-#     import os
-#     import mc_lib
-#     return os.path.dirname(mc_lib.__file__)
+def get_include():
+    import os
+    import mc_lib
+    return os.path.dirname(mc_lib.__file__)

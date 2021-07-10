@@ -15,6 +15,7 @@ author="Dmitry Godyaev"
 maintainer="Evgeni Burovski"
 author-email="dvgodyaev@edu.hse.ru"
 home-page="https://github.com/ev-br/mc_lib"
+#module="mc_lib"
 summary = "Assorted small utilities for MC simulations with Cython."
 requires-python="py3"
 description-file="README.md"
@@ -22,10 +23,5 @@ platforms="any"
 classifiers = [
     "Intended Audience :: Developers",
     "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-requires = [
-    "wheel>0.33",
-    "meson",
-    "setuptools",
-    "numpy>=1.19.5",
-    "Cython>=0.29.18",]
