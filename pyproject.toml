@@ -4,8 +4,6 @@ requires  = [
     "meson",
     "mesonpep517",
     "ninja",
-    "Cython>=0.29.18",
-    "numpy>=1.19.5",
 ]
 
 build-backend = "mesonpep517.buildapi"
@@ -24,4 +22,9 @@ classifiers = [
     "Intended Audience :: Developers",
     "Programming Language :: Python :: 3",
     "Topic :: Software Development :: Libraries :: Python Modules",
+]
+requires  = [
+    "Cython>=0.29.18",
+    "numpy>=1.19.5",
+    "pytest"
 ]

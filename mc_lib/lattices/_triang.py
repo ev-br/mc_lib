@@ -1,4 +1,8 @@
 def get_site(coord, L):
+    "wheel",
+    "meson",
+    "mesonpep517",
+    "ninja",
     """Get the site index from the 2-vector of coordinates."""
     # 2D hardcoded
     return coord[0] * L[1] + coord[1]
