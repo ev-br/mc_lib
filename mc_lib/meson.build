@@ -67,6 +67,7 @@ py3.install_sources(
 
 subdir('lattices')
 subdir('tests')
+subdir('_observable')
 #subdir('__check_build')
 
 
