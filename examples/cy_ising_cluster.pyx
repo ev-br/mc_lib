@@ -7,6 +7,8 @@ from mc_lib.lattices import tabulate_neighbors
 cimport cython
 from libc.math cimport exp, tanh
 from libcpp.vector cimport vector
+from libcpp.set cimport set
+from cython.operator cimport dereference as deref, preincrement as inc
 from libcpp cimport bool
 
 from mc_lib.rndm cimport RndmWrapper
@@ -51,13 +53,16 @@ cdef double magnetization(long[::1] spins):
 
     return mag
     
-# Pre culculating exp(-2.0*beta * summ * spins[site]), where summ * spins[site] in [-4, 4]
+# Pre calculating exp(-2.0*beta * summ * spins[site])
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cdef void culc_ratios(double[::1] ratios,
-                      double beta):
-    for summ in range(-4, 5):
-        ratios[summ + 4] = exp(-2.0*beta * summ)
+cdef void calc_ratios(double[::1] ratios,
+                      double beta,
+                      int nDim):
+    cdef:
+        int summ
+    for summ in range(-nDim*2, nDim*2+1):
+        ratios[summ + nDim*2] = exp(-2.0*beta * summ)
         
         
 # A single metropolis update
@@ -67,7 +72,8 @@ cdef void flip_spin(long[::1] spins,
                     const long[:, ::1] neighbors,
                     double beta,
                     const double[::1] ratios,
-                    RndmWrapper rndm):
+                    RndmWrapper rndm,
+                    int nDim):
     cdef:
         Py_ssize_t site = int(spins.shape[0] * rndm.uniform())
         Py_ssize_t site1
@@ -82,7 +88,7 @@ cdef void flip_spin(long[::1] spins,
         site1 = neighbors[site, j]
         summ += spins[site1]
    
-    cdef double ratio = ratios[4 + summ * spins[site]]
+    cdef double ratio = ratios[nDim*2 + summ * spins[site]]
     
     if rndm.uniform() > ratio:
         return
@@ -97,17 +103,24 @@ cdef void cluster_update(long[::1] spins,
                          const long[:, ::1] neighbors,
                          double p,
                          RndmWrapper rndm):
+    '''
+    An implementation of the Wolff algorithm
+    as presented in Statistical Mechanics Algorithms and Computations
+    by Werner Krauth
+    '''
+    
     cdef:
         vector[int] pocket
-        vector[int] cluster
+        set[int] cluster
         int cur, cur_id
         int nghbr
         int i, j
         bool in_cluster
+        set[int].iterator it
         
     cur = int(spins.shape[0] * rndm.uniform())
     pocket.push_back(cur)
-    cluster.push_back(cur)
+    cluster.insert(cur)
     
     while not pocket.empty():
         cur_id = int(pocket.size() * rndm.uniform())
@@ -118,19 +131,19 @@ cdef void cluster_update(long[::1] spins,
                 continue
             
             in_cluster = False
-            for j in range(cluster.size()):
-                if cluster[j] == nghbr:
-                    in_cluster = True
-                    break
+            if(cluster.find(nghbr) != cluster.end()):
+                in_cluster = True
                 
             if not in_cluster and rndm.uniform() < p:
-                cluster.push_back(nghbr)
+                cluster.insert(nghbr)
                 pocket.push_back(nghbr)
                 
         pocket.erase(pocket.begin() + cur_id)
         
-    for i in range(cluster.size()):
-        spins[cluster[i]] *= -1
+    it = cluster.begin()
+    while it != cluster.end():
+        spins[deref(it)] *= -1
+        inc(it)
 
 ##########################################################################3
 
@@ -139,31 +152,26 @@ def simulate(Py_ssize_t L,
              double beta,
              Py_ssize_t num_sweeps,
              int num_therm = 100000,
-             int to_print = 0,
+             int verbose = 0,
              int sampl_frequency = 10000,
              double cluster_upd_prob = 1.0,
              int do_intermediate_measure = 0,
              int upd_per_sweep = 1):
-    
     '''
     L - length of the conformation
     neighbors - table of neighbor indexes
     beta - invere temperature
     num_sweeps - number of sweeps for the measurement
     num_therm - number of thermolisation sweeps
-    to_print :
-        0 - intermediate values will not be printed 
-        1 -intermediate values will be printed 
     
     '''
-    
-    
     # set up the lattice
     cdef:   
         double T = 1./beta
 
     # print(np.asarray(neighbors))
-    print("beta = ", beta, "  T = ", 1./beta)
+    if verbose >= 1:
+        print("beta = ", beta, "  T = ", 1./beta)
 
 
     # set up the simulation
@@ -182,15 +190,16 @@ def simulate(Py_ssize_t L,
         list ene_arr = []
         double choose_update
         double accept_ratio = 1.0 - exp(-2.0 * beta)
+        int nDim = (neighbors.shape[1] - 1) // 2
 
-    cdef double[::1] ratios = np.empty(9, dtype=float)
-    culc_ratios(ratios, beta)
+    cdef double[::1] ratios = np.empty(nDim*4+1, dtype=float)
+    calc_ratios(ratios, beta, nDim)
     
     # initialize spins
     cdef long[::1] spins =  np.empty(L, dtype=int)
     init_spins(spins, rndm)
-    print("Conformation size =", L)
-    # print("initial config: ", np.asarray(spins))
+    if verbose >= 1:
+        print("Conformation size =", L)
 
     # thermalization
     for sweep in range(num_therm):
@@ -201,7 +210,7 @@ def simulate(Py_ssize_t L,
         else:
             for i in range(steps_per_sweep):
                 step += 1
-                flip_spin(spins, neighbors, beta, ratios, rndm)
+                flip_spin(spins, neighbors, beta, ratios, rndm, nDim)
 
     # main MC loop
     for sweep in range(num_sweeps):
@@ -212,7 +221,7 @@ def simulate(Py_ssize_t L,
         else:
             for i in range(steps_per_sweep):
                 step += 1
-                flip_spin(spins, neighbors, beta, ratios, rndm)
+                flip_spin(spins, neighbors, beta, ratios, rndm, nDim)
         
         # measurement
         av_en += energy(spins, neighbors) / L
@@ -227,8 +236,8 @@ def simulate(Py_ssize_t L,
             ene_arr.append(copy.deepcopy(ene))
 
         # printout
-        if sweep % num_prnt == 0:
-            if to_print == 1:
+        if verbose >= 2:
+            if sweep % num_prnt == 0:
                 print("\n----- sweep = ", sweep, "spins = ", np.asarray(spins), "beta = ", beta)
                 print("  ene = ", av_en / Z, " (naive)")
                 print("      = ", ene.mean, '+/-', ene.errorbar)
@@ -238,29 +247,14 @@ def simulate(Py_ssize_t L,
             # uncomment to check the block stats
             #ene.pretty_print_block_stats()
     
-    print("\nFinal:")
-    print("  ene = ", av_en / Z, " (naive)")
-    print("  ene = ", ene.mean, '+/-', ene.errorbar)
-
-    print("  mag^2 = ", mag2.mean, '+/-', mag2.errorbar)
-    print("  mag^4 = ", mag4.mean, '+/-', mag4.errorbar)
-        
-    '''
-    # energy measurment for converge test
-    for sweep in range(num_sweeps * 10):
-        for i in range(steps_per_sweep):
-            step += 1
-            flip_spin(spins, neighbors, beta, ratios, rndm)
-        
-        long_time_ene.add_measurement(energy(spins, neighbors))
+    if verbose >= 1:
+        print("\nFinal:")
+        print("  ene = ", av_en / Z, " (naive)")
+        print("  ene = ", ene.mean, '+/-', ene.errorbar)
     
-    print("test ene = ", long_time_ene.mean, "+/-", long_time_ene.errorbar)
-    
-    # check the the final result converges
-    if long_time_ene.mean + long_time_ene.errorbar > ene.mean + ene.errorbar or long_time_ene.mean - long_time_ene.errorbar < ene.mean - ene.errorbar :
-        raise RuntimeError("did not converge")
+        print("  mag^2 = ", mag2.mean, '+/-', mag2.errorbar)
+        print("  mag^4 = ", mag4.mean, '+/-', mag4.errorbar)
         
-    '''
     return ene, mag2, mag4, np.array(ene_arr, dtype=RealObservable)
 
 
