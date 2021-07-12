@@ -1,7 +1,17 @@
 # Assorted small utilities for MC simulations with Cython.
 
 ----------
-### How to build
+
+### How to install (meson + PEP517)
+
+1. ```
+    git remote add noDGodyaev https://github.com/noDGodyaev/mc_lib
+    git fetch noDGodyaev
+    git checkout noDGodyaev/meson_build
+    ```
+2. ```pip install .```
+----------
+### How to build (meson)
 Thx to Ralf Gommers
 1. ```pip install git+https://github.com/mesonbuild/meson.git@master```
 2. ```
@@ -10,20 +20,21 @@ Thx to Ralf Gommers
    git checkout noDGodyaev/meson_build
    ```
 3. ```pip install -r requirements.txt```
-4. ```cd pckg```
    
    Meson uses a configure and a build stage.
    To configure it for putting the build artifacts in `build/` 
    and a local install under `installdir/` and then build:
 
-5. ```meson setup build --prefix=$PWD/installdir```
-6. ```meson install -C build``` It will done both commands: compile and install
+4. ```meson setup build --prefix=$PWD/installdir```
+5. ```meson install -C build``` It will done both commands: compile and install
 
-7. ```export PYTHONPATH=$PWD/pckg/installdir/lib/python3.8/site-packages/```
+6. ```export PYTHONPATH=$PWD/pckg/installdir/lib/python3.8/site-packages/```
    
-8.  Pure python :```python -c "from mc_lib.tests.test_cubic_lattice import test_roundtrip; test_roundtrip"```
+7.  Pure python :```python -c "from mc_lib.tests.test_cubic_lattice import test_roundtrip; test_roundtrip"```
 
 ----
+
+
 
 ### Installation
 
