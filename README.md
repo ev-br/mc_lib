@@ -10,6 +10,10 @@
     git checkout noDGodyaev/meson_build
     ```
 2. ```pip install .```
+
+Err: Tests from `mc_lib\tests` don't pass, while package is built (in virtual env) and tests files are in catalog near source (inside or one level up).
+
+
 ----------
 ### How to build (meson)
 Thx to Ralf Gommers
