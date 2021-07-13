@@ -1,7 +1,7 @@
 #cython: language_level=3
 
 import numpy as np
-from mc_lib import tabulate_neighbors
+from mc_lib.lattices import tabulate_neighbors
 
 cimport cython
 from libc.math cimport exp, tanh
