@@ -5,7 +5,7 @@ from distutils.extension import Extension
 from Cython.Distutils import build_ext
 
 import numpy
-import mc_lib1111
+import mc_lib
 
 # Special dance for MacOS
 # https://github.com/cython/cython/issues/2694
@@ -17,7 +17,7 @@ else:
 
 ext = Extension("cy_ising", ["cy_ising.pyx"],
                 include_dirs = [numpy.get_include(),
-                                mc_lib1111.get_include()],
+                                mc_lib.get_include()],
                 language='c++',
                 extra_compile_args=extra_compile_args,
                 )
