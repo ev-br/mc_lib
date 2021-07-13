@@ -30,7 +30,7 @@ jobs:
     - name: Build
       run: |
         clang --version
-        python -m pip install -e . -v
+        python -m pip install .
     - name: Test with pytest
       run: |
         pytest mc_lib/tests -v
