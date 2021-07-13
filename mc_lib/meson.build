@@ -1,13 +1,5 @@
 install_dir = 'mc_lib'
 
-_rndm_pxd = custom_target('_rndm_pxd',
-  output : 'rndm.pxd',
-  input : 'rndm.pxd',
-  command : ['cp', '@INPUT@', '@OUTDIR@'],
-)
-
-cython_rndm_pxd = declare_dependency(sources: _rndm_pxd)
-
 _rndm_cpp = custom_target('rndm_cpp',
   output : 'rndm.cpp',
   input : 'rndm.pyx',
@@ -68,6 +60,5 @@ py3.install_sources(
 subdir('lattices')
 subdir('tests')
 subdir('_observable')
-#subdir('__check_build')
 
 
