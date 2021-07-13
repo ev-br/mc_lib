@@ -28,19 +28,6 @@ py3.extension_module(
   subdir: install_dir
 )
 
-_check_rndm_cpp = custom_target('check_rndm_cpp',
-  output : '__check_rndm.cpp',
-  input : '__check_rndm.pyx',
-  command : [cython, '--cplus', '-3', '--fast-fail', '@INPUT@', '-o', '@OUTPUT@']
-)
-
-py3.extension_module(
-  '__check_rndm', _check_rndm_cpp,
-  include_directories: inc_np,
-  dependencies : py3_dep,
-  install: true,
-  subdir: install_dir
-)
 
 pydir = meson.current_build_dir()
 
