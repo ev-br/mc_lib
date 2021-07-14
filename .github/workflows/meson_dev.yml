@@ -46,6 +46,7 @@ jobs:
         python -c "from mc_lib.tests.test_cubic_lattice import test_roundtrip; test_roundtrip"
     - name: Test pytest
       run: |
+        export PYTHONPATH=$PWD/installdir/lib/python${{ matrix.python-version }}/site-packages/
         python -c "import sys; print(sys.path)"
         python -c "from mc_lib.tests import __check_rndm"
         pytest mc_lib -v --pyargs
