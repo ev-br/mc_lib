@@ -36,6 +36,7 @@ python_sources = [
     '__init__.py',
     'rndm.pxd',
     'observable.pxd',
+    'Pytester.py',
 ]
 
 py3.install_sources(
