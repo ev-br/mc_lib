@@ -68,11 +68,10 @@ jobs:
         mv mc_lib_s mc_lib
     - name: Test example
       run: |
-        cd examples
-        python setup.py build_ext --inplace
-        cd ..
+        export PYTHONPATH=$PWD/installdir/lib/python${{ matrix.python-version }}/site-packages/
         mv mc_lib mc_lib_s
         cd examples
+        python setup.py build_ext --inplace
         python -c'from cy_ising import simulate; simulate(4, 1.25, 20000)'
 
 
