@@ -1,7 +1,7 @@
 project(
   'mc_lib',
   ['c', 'cpp'],
-  default_options : ['warning_level=3'],
+  default_options : ['warning_level=3', 'c_std=c11', 'cpp_std=c++11'],
   version: '0.2',
   license: 'BSD-2',
   meson_version: '>= 0.54',
