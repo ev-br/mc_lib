@@ -40,7 +40,7 @@ jobs:
     - name: PYTHONPATH
       run: |
         python -c "import sys; print(sys.path)"
-        export PYTHONPATH=$PWD/installdir/lib/${{ matrix.python-version }}/site-packages
+        export PYTHONPATH=$PWD/installdir/lib/python${{ matrix.python-version }}/site-packages
         pwd
         python -c "import sys; print(sys.path)"
     - name: Test pure python
