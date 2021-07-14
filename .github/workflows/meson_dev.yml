@@ -28,6 +28,12 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install numpy cython pytest ninja
         python -m pip install git+https://github.com/mesonbuild/meson.git@master
+    - name: Full test nvm
+      run: |
+        meson setup build --prefix=$PWD/installdir
+        meson install -C build
+        python -c "from mc_lib.tests.test_cubic_lattice import test_roundtrip; test_roundtrip"
+        python runtests.py -v -t "mc_lib.tests"
     - name: Build
       run: |
         meson setup build --prefix=$PWD/installdir
@@ -57,10 +63,6 @@ jobs:
         cd site-packages
         ls
         pwd
-    - name: Test pytest-new
-      run: |
-        export PYTHONPATH=$PWD/installdir/lib/python${{ matrix.python-version }}/site-packages/
-        python runtests.py -v -t "mc_lib.tests"
     - name: Test pytest
       run: |
         pwd
@@ -70,6 +72,9 @@ jobs:
         python -c "from mc_lib.tests import __check_rndm"
         pytest mc_lib -v --pyargs
         mv mc_lib_s mc_lib
+    - name: Test pytest-new
+      run: |
+        python runtests.py -v -t "mc_lib.tests"
     - name: Test example
       run: |
         export PYTHONPATH=$PWD/installdir/lib/python${{ matrix.python-version }}/site-packages/
