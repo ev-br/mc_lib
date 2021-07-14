@@ -66,6 +66,8 @@ jobs:
         python -c "from mc_lib.tests import __check_rndm"
         pytest mc_lib -v --pyargs
         mv mc_lib_s mc_lib
+    - name: Test pytest-new
+      run: |
         python runtests.py -t "mc_lib.tests.test_cubic_lattice"
     - name: Test example
       run: |
