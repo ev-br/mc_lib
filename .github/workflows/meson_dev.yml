@@ -68,7 +68,7 @@ jobs:
         mv mc_lib_s mc_lib
     - name: Test pytest-new
       run: |
-        python runtests.py -t "mc_lib.tests.test_cubic_lattice"
+        python runtests.py -t -v "mc_lib"
     - name: Test example
       run: |
         export PYTHONPATH=$PWD/installdir/lib/python${{ matrix.python-version }}/site-packages/

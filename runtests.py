@@ -1,31 +1,46 @@
-import os
+import shutil
 import sys
+import os
+
+# Drop source directory from PYTHONPATH
+from argparse import ArgumentParser
+
+sys.path.pop(0)
+
+PROJECT_MODULE = "mc_lib"
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__)))
 
 
-class PytestTester:
-    """
-    Pytest test runner entry point.
-    """
+def main(argv):
+    print(ROOT_DIR)
+    parser = ArgumentParser()
+    parser.add_argument("--verbose", "-v", action="count", default=1,
+                        help="more verbosity")
+    parser.add_argument("--tests", "-t", action='append', help="Specify tests to run")
 
-    def __init__(self, module_name):
-        self.module_name = module_name
+    args = parser.parse_args(argv)
 
-    def __call__(self, tests=None):
-        import pytest
+    test_dir = os.path.join(ROOT_DIR, 'build', 'test')
+    if not os.path.isdir(test_dir):
+        os.makedirs(test_dir)
+    print(os.path.join(ROOT_DIR))
+    print(os.path.join(test_dir))
 
-        module = sys.modules[self.module_name]
-        module_path = os.path.abspath(module.__path__[0])
+    cwd = os.getcwd()
+    try:
+        __import__(PROJECT_MODULE)
+        test = sys.modules[PROJECT_MODULE].test
+        os.chdir(test_dir)
+        result = test(verbose=args.verbose)
+    finally:
+        os.chdir(cwd)
 
-        pytest_args = ['--showlocals', '--tb=short']
+    if isinstance(result, bool):
+        sys.exit(0 if result else 1)
+    elif result.wasSuccessful():
+        sys.exit(0)
+    else:
+        sys.exit(1)
 
-        if tests is None:
-            tests = [self.module_name]
-
-        pytest_args += ['--pyargs'] + list(tests)
-
-        try:
-            code = pytest.main(pytest_args)
-        except SystemExit as exc:
-            code = exc.code
-
-        return code == 0
+if __name__ == "__main__":
+    main(argv=sys.argv[1:])
