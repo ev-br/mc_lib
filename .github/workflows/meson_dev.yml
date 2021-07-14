@@ -42,12 +42,13 @@ jobs:
         python -c "import sys; print(sys.path)"
         export PYTHONPATH=$PWD/installdir/lib/python3.8/site-packages
         pwd
+        python -c "import sys; print(sys.path)"
     - name: Test pure python
       run: |
         python -c "from mc_lib.tests.test_cubic_lattice import test_roundtrip; test_roundtrip"
     - name: Test pytest
       run: |
-        pytest mc_lib -v --pyargs
+        pytest -v --pyargs
     - name: Test example
       run: |
         cd examples
