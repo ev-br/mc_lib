@@ -56,8 +56,10 @@ jobs:
         ls
         cd site-packages
         ls
+        pwd
     - name: Test pytest
       run: |
+        pwd
         export PYTHONPATH=$PWD/installdir/lib/python${{ matrix.python-version }}/site-packages/
         python -c "import sys; print(sys.path)"
         python -c "from mc_lib.tests import __check_rndm"
