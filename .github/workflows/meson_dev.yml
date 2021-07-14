@@ -39,7 +39,7 @@ jobs:
         meson install -C build
     - name: Test pure python
       run: |
-        export PYTHONPATH=$PWD/installdir/lib/python3.8/site-packages/
+        export PYTHONPATH=$PWD/installdir/lib/python3.8/site-packages
         python -c "from mc_lib.tests.test_cubic_lattice import test_roundtrip; test_roundtrip"
     - name: Test pytest
       run: |

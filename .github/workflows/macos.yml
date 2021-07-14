@@ -33,8 +33,9 @@ jobs:
         python -m pip install .
     - name: Test with pytest
       run: |
-        pytest mc_lib/tests -v
-        # also compile and run the 1D Ising example
+        pytest mc_lib -v --pyargs
+    - name: Test with example
+      run: |
         cd examples
         python setup.py build_ext --inplace
         python -c'from cy_ising import simulate; simulate(4, 1.25, 20000)'
