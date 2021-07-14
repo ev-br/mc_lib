@@ -13,6 +13,10 @@ __version__ = "0.2"
 # and if not will raise a useful error.
 # from . import __check_build
 
+from mc_lib.Pytester import PytestTester
+
+test = PytestTester(__name__)
+del PytestTester
 
 def get_include():
     import os
