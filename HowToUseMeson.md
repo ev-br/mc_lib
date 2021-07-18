@@ -162,6 +162,7 @@ py3.extension_module(
   cython_args: '--cplus'
 )
 ```
+
 As for my work, compiler argument  `cython_args: '--cplus'`
 don't work, meson do not apply any `cython` args, which I added
 by this command. Also using `custom target` give developer a possibility
@@ -169,7 +170,9 @@ to control `.so` files compilation. For example, to build
 MC_lib on OSX it necessary to use `C++11`, and using `custom target`
 for `.pyx` &rarr; `.cpp` take positional args for `cython` compiler and
 'extension_module' take positional args for `C++` compiler
+
 ------
+
 All API for compiled files should be installed as source files
 ```meson
 python_sources = [
