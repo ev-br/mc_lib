@@ -9,6 +9,9 @@ sys.path.pop(0)
 
 PROJECT_MODULE = "mc_lib"
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__)))
+major = sys.version_info.major
+minor = sys.version_info.minor
+path_to_add = ROOT_DIR + '/installdir/lib/python' + str(major) + '.' + str(minor) + '/site-packages/'
 
 
 def main(argv):
@@ -16,15 +19,13 @@ def main(argv):
     parser = ArgumentParser()
     parser.add_argument("--verbose", "-v", action="count", default=1,
                         help="more verbosity")
-    parser.add_argument("--tests", "-t", action='append', help="Specify tests to run")
-
+    parser.add_argument("--tests", "-t", action='append',
+                        help="Specify tests to run")
     args = parser.parse_args(argv)
 
     test_dir = os.path.join(ROOT_DIR, 'build', 'test')
     if not os.path.isdir(test_dir):
         os.makedirs(test_dir)
-    print(os.path.join(ROOT_DIR))
-    print(os.path.join(test_dir))
 
     cwd = os.getcwd()
     try:
@@ -41,6 +42,7 @@ def main(argv):
         sys.exit(0)
     else:
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main(argv=sys.argv[1:])
