@@ -8,9 +8,10 @@ project(
 )
 
 if build_machine.system() == 'darwin'
-    add_global_arguments('cpp_std=c++11', language : 'cpp')
+    add_global_arguments('-std=c++11', language : 'cpp')
     message('found OS X, add special argument to compiler')
 endif
+
 
 if meson.backend() != 'ninja'
   error('MESON_SKIP_TEST: Ninja backend required')
