@@ -1,11 +1,16 @@
 project(
   'mc_lib',
-  ['c', 'cpp'],
-  default_options : ['warning_level=3', 'c_std=c11', 'cpp_std=c++11'],
+  ['cpp', 'cython'],
+  default_options : ['warning_level=3'],
   version: '0.2',
   license: 'BSD-2',
   meson_version: '>= 0.54',
 )
+
+if build_machine.system() == 'darwin'
+    add_global_arguments('cpp_std=c++11', language : 'cpp')
+    message('found OS X, add special argument to compiler')
+endif
 
 if meson.backend() != 'ninja'
   error('MESON_SKIP_TEST: Ninja backend required')
@@ -15,6 +20,7 @@ cython = find_program('cython', required : true)
 if not cython.found()
   error('MESON_BUILD_FAILED: Cython3 not found.')
 endif
+
 
 
 py_mod = import('python')
@@ -29,5 +35,6 @@ incdir_numpy = run_command(py3,
 ).stdout().strip()
 
 inc_np = include_directories(incdir_numpy)
+
 
 subdir('mc_lib')
