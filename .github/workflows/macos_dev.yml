@@ -12,10 +12,10 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     strategy:
       matrix:
-        python-version: ['3.6', '3.7', '3.8', '3.9']
+        python-version: ['3.8', '3.9']
 
     steps:
     - uses: actions/checkout@v2
@@ -41,15 +41,9 @@ jobs:
       run: |
         python -c "from mc_lib.tests.test_cubic_lattice import test_roundtrip; test_roundtrip"
     - name: Test pytest
-      continue-on-error: true
       run: |
         export PYTHONPATH=$PWD/installdir/lib/python${{ matrix.python-version }}/site-packages/
         pytest mc_lib -v --pyargs
-    - name: Test pytest-new
-      continue-on-error: true
-      run: |
-        export PYTHONPATH=$PWD/installdir/lib/python${{ matrix.python-version }}/site-packages/
-        python runtests.py -v -t "mc_lib"
     - name: Test example
       run: |
         export PYTHONPATH=$PWD/installdir/lib/python${{ matrix.python-version }}/site-packages/

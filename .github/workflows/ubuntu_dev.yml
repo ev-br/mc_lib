@@ -1,7 +1,7 @@
 # This workflow will install Python dependencies, run tests and lint with a variety of Python versions
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
-name: Meson simple build
+name: Meson
 
 on:
   push:
@@ -12,7 +12,7 @@ on:
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: ['3.6', '3.7', '3.8', '3.9']
@@ -37,3 +37,18 @@ jobs:
     - name: Install
       run: |
         meson install -C build
+    - name: Test pure python
+      run: |
+        python -c "from mc_lib.tests.test_cubic_lattice import test_roundtrip; test_roundtrip"
+    - name: Test pytest
+      run: |
+        export PYTHONPATH=$PWD/installdir/lib/python${{ matrix.python-version }}/site-packages/
+        pytest mc_lib -v --pyargs
+    - name: Test example
+      run: |
+        export PYTHONPATH=$PWD/installdir/lib/python${{ matrix.python-version }}/site-packages/
+        cd examples
+        python setup.py build_ext --inplace
+        python -c'from cy_ising import simulate; simulate(4, 1.25, 20000)'
+        #mv mc_lib mc_lib_s
+
