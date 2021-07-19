@@ -11,6 +11,9 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
+/venv/
+../venv/
+./venv/
 build/
 develop-eggs/
 dist/
@@ -67,3 +70,16 @@ target/
 *~
 \#*
 cythonize.dat
+
+
+# PyCharm IDE's files
+/.idea
+
+# Build Files
+/mc_lib/b
+/mc_lib/installdir
+/mc_lib/build
+/mc_lib/in
+/mc_lib/inc
+/tests/q
+Ideas

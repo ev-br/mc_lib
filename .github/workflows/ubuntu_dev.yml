@@ -1,7 +1,7 @@
 # This workflow will install Python dependencies, run tests and lint with a variety of Python versions
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
-name: Ubuntu-latest
+name: Ubuntu-latest Dev
 
 on:
   push:
@@ -26,15 +26,29 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        python -m pip install numpy cython pytest
+        python -m pip install numpy cython pytest ninja
+        python -m pip install git+https://github.com/mesonbuild/meson.git@master
     - name: Build
       run: |
-        python -m pip install -e . -v
-    - name: Test with pytest
+        meson setup build --prefix=$PWD/installdir
+    - name: Compile
       run: |
-        pytest mc_lib/tests -v
-        # also compile and run the 1D Ising example
+        meson compile -C build
+    - name: Install
+      run: |
+        meson install -C build
+    - name: Test pure python
+      run: |
+        python -c "from mc_lib.tests.test_cubic_lattice import test_roundtrip; test_roundtrip"
+    - name: Test pytest
+      run: |
+        export PYTHONPATH=$PWD/installdir/lib/python${{ matrix.python-version }}/site-packages/
+        pytest mc_lib -v --pyargs
+    - name: Test example
+      run: |
+        export PYTHONPATH=$PWD/installdir/lib/python${{ matrix.python-version }}/site-packages/
         cd examples
         python setup.py build_ext --inplace
         python -c'from cy_ising import simulate; simulate(4, 1.25, 20000)'
+        #mv mc_lib mc_lib_s
 
