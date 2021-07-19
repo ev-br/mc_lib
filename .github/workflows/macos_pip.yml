@@ -29,7 +29,6 @@ jobs:
         python -m pip install numpy cython pytest
     - name: Build
       run: |
-        clang --version
         python -m pip install .
     - name: Test with pytest
       run: |
