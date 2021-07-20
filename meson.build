@@ -8,7 +8,7 @@ project(
 )
 
 if build_machine.system() == 'darwin'
-    add_global_arguments('-std=c++11', language : 'cpp')
+    add_global_arguments('-std=c++17', language : 'cpp')
     message('found OS X, add special argument to compiler')
 endif
 
