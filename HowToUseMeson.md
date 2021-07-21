@@ -195,6 +195,7 @@ py3.install_sources(
 
 Example of build file is  `/examples/meson.build`. All site-packages must be included
 into `shared_library` meson class (`python.extension_module`).
+The same solution is used in `mc_lib/meson.build` for NumPy package.
 
 ```meson
 # Check mc_lib installation and get path to it directory
@@ -222,4 +223,10 @@ py3.extension_module(
 )
 ```
 
-The same solution is used in mc_lib/meson.build for NumPy package.
+Specially for MacOS need to add `-std=C++17` compiler flag.
+```meson
+if build_machine.system() == 'darwin'
+    add_global_arguments('-std=c++17', language : 'cpp')
+    message('found OS X, add special argument to compiler')
+endif
+```
