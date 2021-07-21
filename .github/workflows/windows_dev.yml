@@ -1,0 +1,67 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Windows
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        python-version: ['3.6', '3.7', '3.8', '3.9']
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install numpy cython pytest ninja
+        python -m pip install git+https://github.com/mesonbuild/meson.git@master
+ - name: Build
+      uses: ilammy/msvc-dev-cmd@v1.9.0
+      run: |
+        meson setup build --prefix=$PWD/installdir
+    - name: Compile
+      uses: ilammy/msvc-dev-cmd@v1.9.0
+      run: |
+        meson compile -C build
+    - name: Install
+      uses: ilammy/msvc-dev-cmd@v1.9.0
+      run: |
+        meson install -C build
+    - name: Test pure python
+      uses: ilammy/msvc-dev-cmd@v1.9.0
+      run: |
+        python -c "from mc_lib.tests.test_cubic_lattice import test_roundtrip; test_roundtrip"
+    - name: Test pytest
+      uses: ilammy/msvc-dev-cmd@v1.9.0
+      run: |
+        export PYTHONPATH=$PWD/installdir/lib/python${{ matrix.python-version }}/site-packages/
+        pytest mc_lib -v --pyargs
+    - name: Test example with setup.py
+      uses: ilammy/msvc-dev-cmd@v1.9.0
+      run: |
+        export PYTHONPATH=$PWD/installdir/lib/python${{ matrix.python-version }}/site-packages/
+        cd examples
+        python setup.py build_ext --inplace
+        python -c'from cy_ising import simulate; simulate(4, 1.25, 20000)'
+    - name: Test example with meson
+      uses: ilammy/msvc-dev-cmd@v1.9.0
+      run: |
+        export PYTHONPATH=$PWD/installdir/lib/python${{ matrix.python-version }}/site-packages/
+        cd examples
+        meson setup builddir1 --prefix=$PWD/installdir1
+        meson install -C builddir1
+        cd installdir1/lib/python${{ matrix.python-version }}/site-packages/examples
+        python -c'from cy_ising import simulate; simulate(4, 1.25, 20000)'
