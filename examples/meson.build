@@ -8,6 +8,12 @@ project(
 
 install_dir = 'examples'
 
+# Check if platform is MACOS and give C++17 flags if needed
+if build_machine.system() == 'darwin'
+    add_global_arguments('-std=c++17', language : 'cpp')
+    message('found OS X, add special argument to compiler')
+endif
+
 # Check if Cython installed
 cython = find_program('cython', required : true)
 if not cython.found()
