@@ -19,6 +19,7 @@
     2. [Useful system checks](#subparagraph22)
 4. [Meson + Python](#paragraph3)
 5. [Meson + Cython](#paragraph4)
+5. [How to compile apps, which are using mc_lib with meson](#paragraph5)
 
 ---------
 ## <a name="introduction"></a> Introduction 
@@ -150,8 +151,11 @@ py3.extension_module(
 )
 ```
 ---------
+
 ###Maybe will work later
+
 Meson version > 0.59:
+
 ```meson
 py3.extension_module(
   'observable', _observable_cpp,
@@ -186,3 +190,36 @@ py3.install_sources(
     subdir: install_dir
 )
 ```
+
+## <a name="paragraph4"></a> How to compile apps, which are using mc_lib with meson
+
+Example of build file is  `/examples/meson.build`. All site-packages must be included
+into `shared_library` meson class (`python.extension_module`).
+
+```meson
+# Check mc_lib installation and get path to it directory
+incdir_mc_lib = run_command(py3,
+  ['-c', 'import os; os.chdir(".."); import mc_lib; print(mc_lib.get_include())'],
+  check : true
+).stdout().strip()
+
+inc_mc_lib = include_directories(incdir_mc_lib)
+
+# Compile .cpp file
+_cy_ising = custom_target('cy_ising_cpp',
+  output : 'cy_ising.cpp',
+  input : 'cy_ising.pyx',
+  command : [cython, '--cplus', '-3', '--fast-fail', '@INPUT@', '-o', '@OUTPUT@']
+)
+
+# Compile .so file
+py3.extension_module(
+  'cy_ising', _cy_ising,
+  include_directories: [inc_np,inc_mc_lib],
+  dependencies : py3_dep,
+  install: true,
+  subdir: install_dir,
+)
+```
+
+The same solution is used in mc_lib/meson.build for NumPy package.
