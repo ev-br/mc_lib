@@ -39,9 +39,14 @@ jobs:
         cd examples
         python setup.py build_ext --inplace
         python -c'from cy_ising import simulate; simulate(4, 1.25, 20000)'
+
+        pip install jupyter
+        ipython -c"%run frustrated_2d_ising.ipynb"
     - name: Test  with example meson
       run: |
         cd examples
+        ipython -c"%run frustrated_2d_ising.ipynb"
+
         meson setup builddir1 --prefix=$PWD/installdir1
         meson install -C builddir1
         cd installdir1/lib/python${{ matrix.python-version }}/site-packages/examples
