@@ -33,9 +33,15 @@ jobs:
     - name: Test with pytest
       run: |
         pytest mc_lib -v --pyargs
-    - name: Test with example
+    - name: Test with example setup.py
       run: |
         cd examples
         python setup.py build_ext --inplace
         python -c'from cy_ising import simulate; simulate(4, 1.25, 20000)'
-
+    - name: Test  with example meson
+      run: |
+        cd examples
+        meson setup builddir1 --prefix=$PWD/installdir1
+        meson install -C builddir1
+        cd installdir1/lib/python${{ matrix.python-version }}/site-packages/examples
+        python -c'from cy_ising import simulate; simulate(4, 1.25, 20000)'
