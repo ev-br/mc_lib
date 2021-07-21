@@ -28,6 +28,7 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install numpy cython pytest ninja
         python -m pip install git+https://github.com/mesonbuild/meson.git@master
+        python -m pip install jupyter
     - name: Build
       run: |
         meson setup build --prefix=$PWD/installdir
@@ -50,7 +51,6 @@ jobs:
         cd examples
         python setup.py build_ext --inplace
         python -c'from cy_ising import simulate; simulate(4, 1.25, 20000)'
-        pip install jupyter
         ipython -c"%run frustrated_2d_ising.ipynb"
     - name: Test example with meson
       run: |
