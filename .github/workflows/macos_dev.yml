@@ -28,7 +28,6 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install numpy cython pytest ninja
         python -m pip install git+https://github.com/mesonbuild/meson.git@master
-        python -m pip install jupyter
     - name: Build
       run: |
         meson setup build --prefix=$PWD/installdir
@@ -55,7 +54,6 @@ jobs:
       run: |
         export PYTHONPATH=$PWD/installdir/lib/python${{ matrix.python-version }}/site-packages/
         cd examples
-        ipython -c"%run frustrated_2d_ising.ipynb"
         meson setup builddir1 --prefix=$PWD/installdir1
         meson install -C builddir1
         cd installdir1/lib/python${{ matrix.python-version }}/site-packages/examples
