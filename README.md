@@ -29,10 +29,15 @@ Thx to Ralf Gommers
    To configure it for putting the build artifacts in `build/` 
    and a local install under `installdir/` and then build:
 
-4. ```meson setup build --prefix=$PWD/installdir```
-5. ```meson install -C build``` It will done both commands: compile and install
+4. ```
+    meson setup build --prefix=$PWD/installdir
+    meson install -C build
+   ``` 
+   If you want to rebuild the package for some developer needs.
 
-6. ```export PYTHONPATH=$PWD/installdir/lib/python3.8/site-packages/```
+   Use `setup` with flag `--wipe` to fully rebuild package or
+   `--reconfigure` to update current build
+7. ```export PYTHONPATH=$PWD/installdir/lib/python3.8/site-packages/```
    
 7.  Pure python :```python -c "from mc_lib.tests.test_cubic_lattice import test_roundtrip; test_roundtrip"```
 
