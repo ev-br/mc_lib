@@ -58,14 +58,3 @@ py3.extension_module(
   install: true,
   subdir: install_dir,
 )
-
-# Install other files, if needed
-python_sources = [
-    '__init__.py',
-]
-
-py3.install_sources(
-    python_sources,
-    pure: false,
-    subdir: install_dir,
-)
