@@ -5,30 +5,32 @@
 ### How to install (meson + PEP517)
 
 1. ```
-    git remote add noDGodyaev https://github.com/noDGodyaev/mc_lib
-    git fetch noDGodyaev
-    git checkout noDGodyaev/meson_build
+    git init
+    git remote add mc_lib_git https://github.com/ev-br/mc_lib
+    git fetch mc_lib_git
+    git checkout mc_lib_git/master
     ```
 2. ```pip install .```
 
-Err: Tests from `mc_lib\tests` don't pass, while package is built (in virtual env) and tests files are in catalog near source (inside or one level up).
-
-
 ----------
 ### How to build (meson)
-1. ```pip install git+https://github.com/mesonbuild/meson.git@master```
+1. Get the latest meson
+    ```pip install git+https://github.com/mesonbuild/meson.git@master```
 2. ```
-   git remote add noDGodyaev https://github.com/noDGodyaev/mc_lib
-   git fetch noDGodyaev
-   git checkout noDGodyaev/meson_build
+    git init
+    git remote add mc_lib_git https://github.com/ev-br/mc_lib
+    git fetch mc_lib_git
+    git checkout mc_lib_git/master
    ```
-3. ```pip install -r requirements.txt```
+3. ```
+    pip install -r requirements.txt
+   ```
    
-   Meson uses a configure and a build stage.
+4.    Meson uses a configure and a build stage.
    To configure it for putting the build artifacts in `build/` 
    and a local install under `installdir/` and then build:
 
-4. ```
+    ```
     meson setup build --prefix=$PWD/installdir
     meson install -C build
    ``` 
@@ -36,10 +38,13 @@ Err: Tests from `mc_lib\tests` don't pass, while package is built (in virtual en
 
    Use `setup` with flag `--wipe` to fully rebuild package or
    `--reconfigure` to update current build
-7. ```export PYTHONPATH=$PWD/installdir/lib/python3.8/site-packages/```
-   
-7.  Pure python :```python -c "from mc_lib.tests.test_cubic_lattice import test_roundtrip; test_roundtrip"```
-
+7. ```
+    export PYTHONPATH=$PWD/installdir/lib/python{Your python version}/site-packages
+   ```
+8. Run included tests with
+    ```
+    pytest mc_lib -v --pyargs`
+   ```
 ----
 
 
