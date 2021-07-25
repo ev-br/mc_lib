@@ -14,12 +14,12 @@ endif
 
 
 if meson.backend() != 'ninja'
-  error('MESON_SKIP_TEST: Ninja backend required')
+  error('Ninja backend required')
 endif
 
 cython = find_program('cython', required : true)
 if not cython.found()
-  error('MESON_BUILD_FAILED: Cython3 not found.')
+  error('Cython not found.')
 endif
 
 

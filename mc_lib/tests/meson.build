@@ -1,5 +1,3 @@
-install_dir = 'mc_lib/tests'
-
 _check_rndm_cpp = custom_target('check_rndm_cpp',
   output : '__check_rndm.cpp',
   input : '__check_rndm.pyx',
@@ -11,7 +9,7 @@ py3.extension_module(
   include_directories: inc_np,
   dependencies : py3_dep,
   install: true,
-  subdir: install_dir
+  subdir: 'mc_lib/tests'
 )
 
 
@@ -26,5 +24,5 @@ python_sources = [
 py3.install_sources(
     python_sources,
     pure: false,
-    subdir: install_dir,
+    subdir: 'mc_lib/tests'
 )

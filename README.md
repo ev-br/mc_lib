@@ -16,7 +16,6 @@ Err: Tests from `mc_lib\tests` don't pass, while package is built (in virtual en
 
 ----------
 ### How to build (meson)
-Thx to Ralf Gommers
 1. ```pip install git+https://github.com/mesonbuild/meson.git@master```
 2. ```
    git remote add noDGodyaev https://github.com/noDGodyaev/mc_lib

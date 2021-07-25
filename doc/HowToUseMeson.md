@@ -30,8 +30,8 @@ Some introduction. I'll add it later
 ## <a name="paragraph1"></a> Project structure 
 
 All `meson.build` files connected between each other, it means,
-that variables deaclared in upper `meson.build` are visible
-from every subdirectorys `meson.build` files.
+that variables declared in upper `meson.build` are visible
+from every subdirs `meson.build` files.
 
 The order of subdir() links is important for project. 
 
@@ -86,12 +86,12 @@ using `find_program` function:
 ```meson
 cython = find_program('cython', required : true)
 if not cython.found()
-  error('MESON_BUILD_FAILED: Cython3 not found.')
+  error('MESON_BUILD_FAILED: Cython not found.')
 endif
 ```
 
 Also, the `python` installation must be checked too. 
-Default `pyhton` dependencies saved into variable
+Default `python` dependencies saved into variable
 to insert them into every compile target
 ```meson
 py_mod = import('python')
@@ -158,7 +158,7 @@ Meson version > 0.59:
 
 ```meson
 py3.extension_module(
-  'observable', _observable_cpp,
+  'observable', 'observable.cpp',
   include_directories: inc_np,
   dependencies : py3_dep,
   install: true,
@@ -186,14 +186,13 @@ python_sources = [
 py3.install_sources(
     python_sources,
     pure: false,
-    subdir: install_dir
 )
 ```
 
 ## <a name="paragraph4"></a> How to compile apps, which are using mc_lib with meson
 
 Example of build file is  `/examples/meson.build`. All site-packages must be included
-into `shared_library` meson class (`python.extension_module`).
+into shared_library meson class (`python.extension_module`).
 The same solution is used in `mc_lib/meson.build` for NumPy package.
 
 ```meson
@@ -218,7 +217,6 @@ py3.extension_module(
   include_directories: [inc_np,inc_mc_lib],
   dependencies : py3_dep,
   install: true,
-  subdir: install_dir,
 )
 ```
 
@@ -228,7 +226,6 @@ if build_machine.system() == 'darwin'
     add_global_arguments('-std=c++17', language : 'cpp')
     message('found OS X, add special argument to compiler')
 endif
-<<<<<<< HEAD
 ```
 
 

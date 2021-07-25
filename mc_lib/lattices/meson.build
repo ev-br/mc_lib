@@ -1,5 +1,3 @@
-install_dir = 'mc_lib/lattices'
-
 python_sources = [
     '__init__.py',
     '_common.py',
@@ -10,5 +8,5 @@ python_sources = [
 py3.install_sources(
     python_sources,
     pure: false,
-    subdir: install_dir
+    subdir: 'mc_lib/lattices'
 )

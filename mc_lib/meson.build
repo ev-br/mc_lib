@@ -1,5 +1,3 @@
-install_dir = 'mc_lib'
-
 _rndm_cpp = custom_target('rndm_cpp',
   output : 'rndm.cpp',
   input : 'rndm.pyx',
@@ -11,7 +9,7 @@ py3.extension_module(
   include_directories: inc_np,
   dependencies : py3_dep,
   install: true,
-  subdir: install_dir
+  subdir: 'mc_lib'
 )
 
 _observable_cpp = custom_target('observable_cpp',
@@ -25,12 +23,8 @@ py3.extension_module(
   include_directories: inc_np,
   dependencies : [py3_dep],
   install: true,
-  subdir: install_dir
+  subdir: 'mc_lib'
 )
-
-
-pydir = meson.current_build_dir()
-
 
 python_sources = [
     '__init__.py',
@@ -41,7 +35,7 @@ python_sources = [
 py3.install_sources(
     python_sources,
     pure: false,
-    subdir: install_dir
+    subdir: 'mc_lib'
 )
 
 subdir('lattices')

@@ -1,5 +1,3 @@
-install_dir = 'mc_lib/_observable'
-
 python_sources = [
     'observable.h',
 ]
@@ -7,5 +5,5 @@ python_sources = [
 py3.install_sources(
     python_sources,
     pure: false,
-    subdir: install_dir
+    subdir: 'mc_lib/_observable'
 )

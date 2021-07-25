@@ -6,7 +6,6 @@ project(
   meson_version: '>= 0.54',
 )
 
-install_dir = 'examples'
 
 # Check if platform is MACOS and give C++17 flags if needed
 if build_machine.system() == 'darwin'
@@ -17,7 +16,7 @@ endif
 # Check if Cython installed
 cython = find_program('cython', required : true)
 if not cython.found()
-  error('MESON_BUILD_FAILED: Cython3 not found.')
+  error('Cython not found.')
 endif
 
 # Find installed python
@@ -56,7 +55,7 @@ py3.extension_module(
   include_directories: [inc_np,inc_mc_lib],
   dependencies : py3_dep,
   install: true,
-  subdir: install_dir,
+  subdir: 'examples',
 )
 
 
