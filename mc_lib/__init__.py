@@ -11,7 +11,7 @@ __version__ = "0.2"
 
 # This import will check whether the cython sources have been built,
 # and if not will raise a useful error.
-from . import __check_build
+# from . import __check_build
 
 def get_include():
     import os

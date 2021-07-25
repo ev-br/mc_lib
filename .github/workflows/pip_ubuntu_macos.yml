@@ -1,0 +1,61 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: pip
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: ['3.6', '3.7', '3.8', '3.9']
+        os:  [ubuntu-latest, macos-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install numpy cython pytest ninja
+        python -m pip install git+https://github.com/mesonbuild/meson.git@master
+    - name: Build
+      run: |
+        python -m pip install .
+
+    - name: Test with pytest
+      run: |
+        pytest mc_lib -v --pyargs
+
+    - name: Test example with setup.py
+      run: |
+        cd examples
+        python setup.py build_ext --inplace
+        python -c'from cy_ising import simulate; simulate(4, 1.25, 20000)'
+
+    - name: Test example with meson
+      run: |
+        cd examples
+        meson setup builddir1 --prefix=$PWD/installdir1
+        meson install -C builddir1
+        cd installdir1/lib/python${{ matrix.python-version }}/site-packages/examples
+        python -c'from cy_ising import simulate; simulate(4, 1.25, 20000)'
+
+    - name: Test ipynb
+      run: |
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          # example uses multiprocessing, hangs on MacOS. So skip it unless running on Linux.
+          cd examples
+          pip install ipython nbformat
+          ipython -c"%run frustrated_2d_ising.ipynb"
+         fi

@@ -267,6 +267,6 @@ template<typename T> bool stabilized(const std::vector<T>& v_err) {
 
 }  // namespace detail
 
-}; // namespace mc_stats
+} // namespace mc_stats
 
 #endif
