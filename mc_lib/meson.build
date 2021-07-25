@@ -1,6 +1,7 @@
 _rndm_cpp = custom_target('rndm_cpp',
   output : 'rndm.cpp',
   input : 'rndm.pyx',
+  depend_files: 'rndm.pxd',
   command : [cython, '--cplus', '-3', '--fast-fail', '@INPUT@', '-o', '@OUTPUT@']
 )
 
@@ -15,6 +16,7 @@ py3.extension_module(
 _observable_cpp = custom_target('observable_cpp',
   output : 'observable.cpp',
   input : 'observable.pyx',
+  depend_files: 'observable.pxd',
   command : [cython, '--cplus', '-3', '--fast-fail', '@INPUT@', '-o', '@OUTPUT@']
 )
 
