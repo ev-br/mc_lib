@@ -54,6 +54,6 @@ jobs:
         if [ "$RUNNER_OS" == "Linux" ]; then
           # example uses multiprocessing, hangs on MacOS. So skip it unless running on Linux.
           cd examples
-          pip install jupyter
+          pip install ipython nbformat
           ipython -c"%run frustrated_2d_ising.ipynb"
          fi
