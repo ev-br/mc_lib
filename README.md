@@ -4,58 +4,48 @@
 
 ### How to install (meson + PEP517)
 
-1. ```
-    git init
+```
     git remote add mc_lib_git https://github.com/ev-br/mc_lib
     git fetch mc_lib_git
     git checkout mc_lib_git/master
-    ```
-2. ```pip install .```
+```
+```
+    pip install .
+```
 
 ----------
 ### How to build (meson)
-1. Get the latest meson
-    ```pip install git+https://github.com/mesonbuild/meson.git@master```
-2. ```
-    git init
+Get the latest meson
+```pip install git+https://github.com/mesonbuild/meson.git@master```
+```
     git remote add mc_lib_git https://github.com/ev-br/mc_lib
     git fetch mc_lib_git
     git checkout mc_lib_git/master
-   ```
-3. ```
+```
+```
     pip install -r requirements.txt
-   ```
+```
    
-4.    Meson uses a configure and a build stage.
+Meson uses a configure and a build stage.
    To configure it for putting the build artifacts in `build/` 
    and a local install under `installdir/` and then build:
-
-    ```
+   ```
     meson setup build --prefix=$PWD/installdir
     meson install -C build
    ``` 
    If you want to rebuild the package for some developer needs.
-
    Use `setup` with flag `--wipe` to fully rebuild package or
    `--reconfigure` to update current build
-7. ```
+   
+Get your installdir visible to python:   
+```
     export PYTHONPATH=$PWD/installdir/lib/python{Your python version}/site-packages
-   ```
-8. Run included tests with
-    ```
+```
+Run included tests with
+```
     pytest mc_lib -v --pyargs`
-   ```
+```
 ----
-
-
-
-### Installation
-
-```
-  pip install git+https://github.com/ev-br/mc_lib.git
-```
-
-on Windows `msvcompiler` need to be installed 
   
 ### Usage 
 
