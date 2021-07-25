@@ -1,7 +1,7 @@
 # This workflow will install Python dependencies, run tests and lint with a variety of Python versions
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
-name: Mac OS Dev
+name: dev
 
 on:
   push:
@@ -12,10 +12,11 @@ on:
 jobs:
   build:
 
-    runs-on: macos-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: ['3.8', '3.9']
+        python-version: ['3.6', '3.7', '3.8', '3.9']
+        os:  [ubuntu-latest, macos-latest]
 
     steps:
     - uses: actions/checkout@v2
@@ -28,36 +29,40 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install numpy cython pytest ninja
         python -m pip install git+https://github.com/mesonbuild/meson.git@master
-        python -m pip install jupyter
     - name: Build
       run: |
         meson setup build --prefix=$PWD/installdir
-    - name: Compile
-      run: |
         meson compile -C build
-    - name: Install
-      run: |
         meson install -C build
-    - name: Test pure python
-      run: |
-        python -c "from mc_lib.tests.test_cubic_lattice import test_roundtrip; test_roundtrip"
-    - name: Test pytest
+
+    - name: Test with pytest
       run: |
         export PYTHONPATH=$PWD/installdir/lib/python${{ matrix.python-version }}/site-packages/
         pytest mc_lib -v --pyargs
-    - name: Test example
+
+    - name: Test example with setup.py
       run: |
         export PYTHONPATH=$PWD/installdir/lib/python${{ matrix.python-version }}/site-packages/
         cd examples
         python setup.py build_ext --inplace
         python -c'from cy_ising import simulate; simulate(4, 1.25, 20000)'
+
     - name: Test example with meson
       run: |
         export PYTHONPATH=$PWD/installdir/lib/python${{ matrix.python-version }}/site-packages/
         cd examples
+        rm *so  # clean up the setup.py build (probably not needed)
         meson setup builddir1 --prefix=$PWD/installdir1
         meson install -C builddir1
         cd installdir1/lib/python${{ matrix.python-version }}/site-packages/examples
         python -c'from cy_ising import simulate; simulate(4, 1.25, 20000)'
 
-
+    - name: Test ipynb
+      run: |
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          # example uses multiprocessing, hangs on MacOS. So skip it unless running on Linux.
+          export PYTHONPATH=$PWD/installdir/lib/python${{ matrix.python-version }}/site-packages/
+          cd examples
+          pip install ipython nbformat
+          ipython -c"%run frustrated_2d_ising.ipynb"
+         fi
