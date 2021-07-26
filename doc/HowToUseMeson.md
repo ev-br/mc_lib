@@ -24,7 +24,7 @@
 ---------
 ## <a name="introduction"></a> Introduction 
 
-Some introduction. I'll add it later
+Some time later there would be full port on russian: https://ru.overleaf.com/read/gmzrcgzryjcm
 
 
 ## <a name="paragraph1"></a> Project structure 
