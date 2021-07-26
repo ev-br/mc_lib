@@ -47,7 +47,6 @@ jobs:
     - name: Build
       run: |
         meson setup build --prefix=$PWD/installdir
-        meson compile -C build
         meson install -C build
 
     - name: Test with pytest
