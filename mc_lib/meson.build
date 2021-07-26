@@ -34,14 +34,31 @@ python_sources = [
     'observable.pxd',
 ]
 
+python_sources_lattices = [
+    'lattices/__init__.py',
+    'lattices/_common.py',
+    'lattices/_cubic.py',
+    'lattices/_triang.py',
+]
+
 py3.install_sources(
     python_sources,
     pure: false,
     subdir: 'mc_lib'
 )
 
-subdir('lattices')
+py3.install_sources(
+    python_sources_lattices,
+    pure: false,
+    subdir: 'mc_lib/lattices'
+)
+
+py3.install_sources(
+    '_observable/observable.h',
+    pure: false,
+    subdir: 'mc_lib/_observable'
+)
+
 subdir('tests')
-subdir('_observable')
 
 
