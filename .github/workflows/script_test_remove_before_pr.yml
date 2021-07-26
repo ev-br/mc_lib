@@ -46,9 +46,7 @@ jobs:
         python -m pip install git+https://github.com/mesonbuild/meson.git@master
     - name: Build
       run: |
-        meson setup build --prefix=$PWD/installdir
-        meson compile -C build
-        meson install -C build
+        ./MakeMeson
 
     - name: Test with pytest
       run: |
