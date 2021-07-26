@@ -77,8 +77,8 @@ and `pytest` for testing.
 To build on Apple M1, need `numpy >= 1.21.0` (which is the first numpy version
 to support this hardware).
 
-![pip tests (Linux&MacOS)](https://github.com/ev-br/mc_lib/actions/workflows/pip_ubuntu_macos.yml/badge.svg)
-![meson tests (Linux & MacOS) ](https://github.com/ev-br/mc_lib/actions/workflows/dev_ubuntu_macos.yml/badge.svg)
+[![pip(Linux&MacOS)](https://github.com/ev-br/mc_lib/actions/workflows/pip_ubuntu_macos.yml/badge.svg)](https://github.com/ev-br/mc_lib/actions/workflows/pip_ubuntu_macos.yml/)
+[![meson(Linux & MacOS)](https://github.com/ev-br/mc_lib/actions/workflows/dev_ubuntu_macos.yml/badge.svg)](https://github.com/ev-br/mc_lib/actions/workflows/dev_ubuntu_macos.yml/)
 [![license](http://img.shields.io/badge/license-BSD-blue.svg?style=flat)](https://github.com/ev-br/mc_lib/blob/master/LICENSE)
 
 Hat tip to Jake VanderPlas for his cython_template package. 
