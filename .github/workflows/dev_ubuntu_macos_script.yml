@@ -48,6 +48,7 @@ jobs:
       run: |
         chmod 755 MakeMeson
         ./MakeMeson
+        export PYTHONPATH=$PWD/installdir/lib/python${{ matrix.python-version }}/site-packages/
         pytest mc_lib -v --pyargs
 
     - name: Test with pytest
