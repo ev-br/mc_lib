@@ -16,7 +16,7 @@ only differ in a level of control over the process.
 It is easiest to install directly from github:
 
 ```
-$ pip install git+https://github.com/ev-br/mc_lib.git@master
+$ python -m pip install git+https://github.com/ev-br/mc_lib.git@master
 
 ```
 
@@ -36,7 +36,7 @@ Alternatively, clone the repository from GitHub and run `pip` on the local clone
 ```
 $ git clone https://github.com/ev-br/mc_lib.git
 $ cd mc_lib
-$ pip install .
+$ python -m pip install .
 ```
 
 
@@ -47,8 +47,8 @@ snapshot (we hope this is temporary and we'll be able to use a stable version
 once meson 0.60 is released) and other required packages:
 
 ```
-$ pip install git+https://github.com/mesonbuild/meson.git@master
-$ pip install -r requirements.txt
+$ python -m pip install git+https://github.com/mesonbuild/meson.git@master
+$ python -m pip install -r requirements.txt
 ```
 
 Then, clone the source repository
