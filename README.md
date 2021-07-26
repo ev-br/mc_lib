@@ -34,7 +34,7 @@ $ pytest --pyargs mc_lib -v
 Alternatively, clone the repository from GitHub and run `pip` on the local clone:
 
 ```
-$ git clone git@github.com:ev-br/mc_lib.git
+$ git clone https://github.com/ev-br/mc_lib.git
 $ cd mc_lib
 $ pip install .
 ```
@@ -49,6 +49,13 @@ once meson 0.60 is released) and other required packages:
 ```
 $ pip install git+https://github.com/mesonbuild/meson.git@master
 $ pip install -r requirements.txt
+```
+
+Then, clone the source repository
+
+```
+$ git clone https://github.com/ev-br/mc_lib.git
+$ cd mc_lib
 ```
    
 Meson uses a configure and a build stage. We configure it to use
