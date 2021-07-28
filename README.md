@@ -85,6 +85,7 @@ Now the install is usable and tests should pass:
 $ pytest mc_lib -v --pyargs
 ```
 
+See the `dev.sh` shell script, which does these steps in order.
 
 # Usage 
 
