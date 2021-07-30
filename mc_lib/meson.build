@@ -5,7 +5,7 @@ py3.extension_module(
   dependencies : py3_dep,
   install: true,
   subdir: 'mc_lib',
-  cython_args: '--cplus',
+  override_options : ['cython_language=cpp'],
 )
 
 
@@ -16,7 +16,7 @@ py3.extension_module(
   dependencies : py3_dep,
   install: true,
   subdir: 'mc_lib',
-  cython_args: '--cplus',  #<- this arg does not pass into compilation
+  override_options : ['cython_language=cpp'],  #<-  works
 )
 
 python_sources = [
