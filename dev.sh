@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 meson setup builddir --prefix=$PWD/installdir
 meson install -C builddir
