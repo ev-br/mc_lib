@@ -3,9 +3,9 @@ py3.extension_module(
   'rndm', 'rndm.pyx',
   include_directories: inc_np,
   dependencies : py3_dep,
+  override_options : ['cython_language=cpp'],
   install: true,
   subdir: 'mc_lib',
-  override_options : ['cython_language=cpp'],
 )
 
 
@@ -14,9 +14,9 @@ py3.extension_module(
   'observable', 'observable.pyx',
   include_directories: inc_np,
   dependencies : py3_dep,
+  override_options : ['cython_language=cpp'],  #<-  shall works
   install: true,
   subdir: 'mc_lib',
-  override_options : ['cython_language=cpp'],  #<-  works
 )
 # create a list of files which will be installed as source
 python_sources = [
