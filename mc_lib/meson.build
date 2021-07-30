@@ -1,31 +1,22 @@
-_rndm_cpp = custom_target('rndm_cpp',
-  output : 'rndm.cpp',
-  input : 'rndm.pyx',
-  depend_files: 'rndm.pxd',
-  command : [cython, '--cplus', '-3', '--fast-fail', '@INPUT@', '-o', '@OUTPUT@']
-)
 
 py3.extension_module(
-  'rndm', _rndm_cpp,
+  'rndm', 'rndm.pyx',
   include_directories: inc_np,
   dependencies : py3_dep,
   install: true,
-  subdir: 'mc_lib'
+  subdir: 'mc_lib',
+  cython_args: '--cplus',
 )
 
-_observable_cpp = custom_target('observable_cpp',
-  output : 'observable.cpp',
-  input : 'observable.pyx',
-  depend_files: 'observable.pxd',
-  command : [cython, '--cplus', '-3', '--fast-fail', '@INPUT@', '-o', '@OUTPUT@']
-)
+
 
 py3.extension_module(
-  'observable', _observable_cpp,
+  'observable', 'observable.pyx',
   include_directories: inc_np,
-  dependencies : [py3_dep],
+  dependencies : py3_dep,
   install: true,
-  subdir: 'mc_lib'
+  subdir: 'mc_lib',
+  cython_args: '--cplus',  #<- this arg does not pass into compilation
 )
 
 python_sources = [
