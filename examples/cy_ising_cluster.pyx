@@ -147,8 +147,7 @@ cdef void cluster_update(long[::1] spins,
 
 ##########################################################################3
 
-def simulate(Py_ssize_t L,
-             long[:, ::1] neighbors,
+def simulate(long[:, ::1] neighbors,
              double beta,
              Py_ssize_t num_sweeps,
              int num_therm = 100000,
@@ -158,7 +157,6 @@ def simulate(Py_ssize_t L,
              int do_intermediate_measure = 0,
              int upd_per_sweep = 1):
     '''
-    L - length of the conformation
     neighbors - table of neighbor indexes
     beta - invere temperature
     num_sweeps - number of sweeps for the measurement
@@ -178,6 +176,7 @@ def simulate(Py_ssize_t L,
     cdef RndmWrapper rndm = RndmWrapper((1234, 0))
 
     cdef:
+        int L = neighbors.shape[0]
         int num_prnt = 10000
         int steps_per_sweep = 10000
         int step = 0, sweep = 0
@@ -238,7 +237,7 @@ def simulate(Py_ssize_t L,
         # printout
         if verbose >= 2:
             if sweep % num_prnt == 0:
-                print("\n----- sweep = ", sweep, "spins = ", np.asarray(spins), "beta = ", beta)
+                print("\n----- sweep = ", sweep, "beta = ", beta)
                 print("  ene = ", av_en / Z, " (naive)")
                 print("      = ", ene.mean, '+/-', ene.errorbar)
     
