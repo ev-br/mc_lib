@@ -2,15 +2,11 @@
 
 # hack to make cythonize detect c++
 #from libcpp.vector cimport vector
-cdef extern from "_observable/observable.h" namespace "mc_stats":
-    void trampoline_mrg(const ScalarObservable[double]& obs,
-                        vector[double] v_av,
-                        vector[double] v_err,
-                        vector[double] v_size)
 
 import numpy as np
 
 from .observable cimport ScalarObservable
+from .observable cimport trampoline_mrg
 
 cdef class RealObservable():
 
