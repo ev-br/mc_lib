@@ -4,6 +4,8 @@ requires  = [
     "meson==0.59.2",
     "mesonpep517",
     "ninja",
+    "Cython>=0.29.18",
+    "numpy>=1.19.5",
 ]
 
 build-backend = "mesonpep517.buildapi"
