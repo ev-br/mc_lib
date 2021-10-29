@@ -1,35 +1,22 @@
-# compile .cpp for rndm module
-_rndm_cpp = custom_target('rndm_cpp',
-  output : 'rndm.cpp',
-  input : 'rndm.pyx',
-  depend_files: 'rndm.pxd',
-  command : [cython, '--cplus', '-3', '--fast-fail', '@INPUT@', '-o', '@OUTPUT@']
-)
-
 # generate .so for rndm
 py3.extension_module(
-  'rndm', _rndm_cpp,
+  'rndm', 'rndm.pyx',
   include_directories: inc_np,
   dependencies : py3_dep,
+  override_options : ['cython_language=cpp'],
   install: true,
-  subdir: 'mc_lib'
+  subdir: 'mc_lib',
 )
 
-# compile .cpp for observable module
-_observable_cpp = custom_target('observable_cpp',
-  output : 'observable.cpp',
-  input : 'observable.pyx',
-  depend_files: 'observable.pxd',
-  command : [cython, '--cplus', '-3', '--fast-fail', '@INPUT@', '-o', '@OUTPUT@']
-)
 
 # generate .so for observable
 py3.extension_module(
-  'observable', _observable_cpp,
+  'observable', 'observable.pyx',
   include_directories: inc_np,
-  dependencies : [py3_dep],
+  dependencies : py3_dep,
+  override_options : ['cython_language=cpp'],  #<-  shall works
   install: true,
-  subdir: 'mc_lib'
+  subdir: 'mc_lib',
 )
 # create a list of files which will be installed as source
 python_sources = [
