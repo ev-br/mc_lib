@@ -62,6 +62,11 @@ def calculate(long[:, ::1] neighbors,
     '''
     neighbors - table of neighbor indexes, where n = neighbors[i, 0] is number of neigbours of spin, and neighbours[i, 1:n+1] is the list of neighbors of spin
     beta - invere temperature
+    
+    returns:
+    ene_total - mean energy
+    mag2 - mean magnetization squared
+    mag4 - mean magnetization power 4 
     '''
     
     cdef:   
@@ -74,7 +79,6 @@ def calculate(long[:, ::1] neighbors,
         double mag4 = 0.0
         double Z = 0.0
         double p
-        long cnt = 0
 
     # print(np.asarray(neighbors))
     if verbose >= 1:
@@ -86,9 +90,12 @@ def calculate(long[:, ::1] neighbors,
     
     while True:
         ene = energy(spins, neighbors)
+        mag = magnetization(spins)
         p = exp(-beta * ene)
         Z += p
         ene_total += ene * p
+        mag2 += mag ** 2 * p
+        mag4 += mag ** 4 * p
         if verbose >= 2:
             print(np.asarray(spins))
             print('ene =', ene)  
@@ -96,9 +103,10 @@ def calculate(long[:, ::1] neighbors,
         if next_spins(spins) == -1:
             break
         
-    ene_total = ene_total / Z
+    ene_total /= Z * L
+    mag2 /= Z * L * L
+    mag4 /= Z * L ** 4
     
-    
-    return ene_total / L
+    return ene_total, mag2, mag4
     
     
