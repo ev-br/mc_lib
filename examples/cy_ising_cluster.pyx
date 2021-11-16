@@ -165,7 +165,7 @@ def simulate(long[:, ::1] neighbors,
     sampl_frequency - determines how often intermediate values ??will be take(when do_intermediate_measure = 1)	
     cluster_upd_prob - probability of using claster update algorythm insted of one-spin update for each step( 1.0 means only cluster update will be used, 0.0 means only one-spin update will be used)
     do_intermediate_measure - 1 means function will return an array of enery values measured during the calculation (useful for determining convergence rate)
-    upd_per_sweep - number of claster updates per sweep
+    upd_per_sweep - number of cluster updates per sweep
     '''
     # set up the lattice
     cdef:   
