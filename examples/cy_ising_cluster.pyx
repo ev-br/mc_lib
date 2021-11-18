@@ -14,12 +14,17 @@ from libcpp cimport bool
 from mc_lib.rndm cimport RndmWrapper
 from mc_lib.observable cimport RealObservable
 
-cdef void init_spins(long[::1] spins,
+cdef long[::1] init_spins(int L,
                      RndmWrapper rndm):
-    # initial configuration
-    for j in range(spins.shape[0]):
+    ''' 
+    initial configuration
+    L: number of spins in configuration
+    '''
+    cdef long[::1] spins =  np.empty(L, dtype=int)
+    for j in range(L):
         spins[j] = 1 if rndm.uniform() > 0.5 else -1
-
+    
+    return spins
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
@@ -56,13 +61,13 @@ cdef double magnetization(long[::1] spins):
 # Pre calculating exp(-2.0*beta * summ * spins[site])
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cdef void calc_ratios(double[::1] ratios,
+cdef void tabulate_ratios(double[::1] ratios,
                       double beta,
                       int nDim):
     cdef:
         int summ
-    for summ in range(-nDim*2, nDim*2+1):
-        ratios[summ + nDim*2] = exp(-2.0*beta * summ)
+    for summ in range(-nDim, nDim+1):
+        ratios[summ + nDim] = exp(-2.0*beta * summ)
         
         
 # A single metropolis update
@@ -88,7 +93,7 @@ cdef void flip_spin(long[::1] spins,
         site1 = neighbors[site, j]
         summ += spins[site1]
    
-    cdef double ratio = ratios[nDim*2 + summ * spins[site]]
+    cdef double ratio = ratios[nDim + summ * spins[site]]
     
     if rndm.uniform() > ratio:
         return
@@ -150,38 +155,48 @@ cdef void cluster_update(long[::1] spins,
 def simulate(long[:, ::1] neighbors,
              double beta,
              Py_ssize_t num_sweeps,
-             int num_therm = 100000,
-             int verbose = 0,
-             int sampl_frequency = 10000,
-             double cluster_upd_prob = 1.0,
-             int do_intermediate_measure = 0,
-             int upd_per_sweep = 1):
+             int num_therm=100000,
+             bint verbose=0,
+             int sampl_frequency=10000,
+             double cluster_upd_prob=1.0,
+             int do_intermediate_measure=0,
+             int upd_per_sweep=1):
     '''
-    neighbors - table of neighbor indexes, where n = neighbors[i, 0] is number of neigbours of spin
-    and neighbours[i, 1:n+1] is the list of neighbors of spin
+    neighbors - table of neighbor indexes,
+    where n = neighbors[i, 0] is number of neigbours of spin and
+    neighbours[i, 1:n+1] is the list of neighbors of spin
+    
     beta - invere temperature
+    
     num_sweeps - number of sweeps for the measurement
+    
     num_therm - number of thermolisation sweeps
-    sampl_frequency - determines how often intermediate values ??will be take(when do_intermediate_measure = 1)	
-    cluster_upd_prob - probability of using claster update algorythm insted of one-spin update for each step( 1.0 means only cluster update will be used, 0.0 means only one-spin update will be used)
-    do_intermediate_measure - 1 means function will return an array of enery values measured during the calculation (useful for determining convergence rate)
-    upd_per_sweep - number of claster updates per sweep
+    
+    verbose:
+        0 - print nothing
+        1 - print information about conformation, measures during execution,
+        and final results
+        
+    sampl_frequency - determines how often intermediate measures will be takeen
+    
+    cluster_upd_prob - probability of using claster update algorythm insted of 
+    one-spin update for each step
+        1.0 - only cluster update will be used
+        0.0 - only one-spin update will be used
+        
+    do_intermediate_measure - 1 means function will return an array of enery
+    values measured during the calculation
+    
+    upd_per_sweep - number of claster updates per 
+    
     '''
-    # set up the lattice
-    cdef:   
-        double T = 1./beta
-
-    # print(np.asarray(neighbors))
-    if verbose >= 1:
-        print("beta = ", beta, "  T = ", 1./beta)
-
 
     # set up the simulation
     cdef RndmWrapper rndm = RndmWrapper((1234, 0))
 
     cdef:
+        double T = 1./beta
         int L = neighbors.shape[0]
-        int num_prnt = 10000
         int steps_per_sweep = 10000
         int step = 0, sweep = 0
         int i, j
@@ -193,16 +208,18 @@ def simulate(long[:, ::1] neighbors,
         list ene_arr = []
         double choose_update
         double accept_ratio = 1.0 - exp(-2.0 * beta)
-        int nDim = (neighbors.shape[1] - 1) // 2
+        int nDim = max(neighbors[:, 0])
+        
+        
+    if verbose == 1:
+        print("beta = ", beta, "  T = ", 1./beta)
+        print("Conformation size =", L)
 
-    cdef double[::1] ratios = np.empty(nDim*4+1, dtype=float)
-    calc_ratios(ratios, beta, nDim)
+    cdef double[::1] ratios = np.empty(nDim*2+1 , dtype=float)
+    tabulate_ratios(ratios, beta, nDim)
     
     # initialize spins
-    cdef long[::1] spins =  np.empty(L, dtype=int)
-    init_spins(spins, rndm)
-    if verbose >= 1:
-        print("Conformation size =", L)
+    cdef long[::1] spins = init_spins(L, rndm)
 
     # thermalization
     for sweep in range(num_therm):
@@ -239,8 +256,8 @@ def simulate(long[:, ::1] neighbors,
             ene_arr.append(copy.deepcopy(ene))
 
         # printout
-        if verbose >= 2:
-            if sweep % num_prnt == 0:
+        if verbose == 1:
+            if sweep % sampl_frequency == 0:
                 print("\n----- sweep = ", sweep, "beta = ", beta)
                 print("  ene = ", av_en / Z, " (naive)")
                 print("      = ", ene.mean, '+/-', ene.errorbar)
@@ -250,7 +267,7 @@ def simulate(long[:, ::1] neighbors,
             # uncomment to check the block stats
             #ene.pretty_print_block_stats()
     
-    if verbose >= 1:
+    if verbose == 1:
         print("\nFinal:")
         print("  ene = ", av_en / Z, " (naive)")
         print("  ene = ", ene.mean, '+/-', ene.errorbar)
