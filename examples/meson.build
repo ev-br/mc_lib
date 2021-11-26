@@ -42,6 +42,8 @@ incdir_mc_lib = run_command(py3,
 inc_np = include_directories(incdir_numpy)
 inc_mc_lib = include_directories(incdir_mc_lib)
 
+numpy_nodepr_api = '-DNPY_NO_DEPRECATED_API=NPY_1_9_API_VERSION'
+
 # Compile .cpp file
 _cy_ising = custom_target('cy_ising_cpp',
   output : 'cy_ising.cpp',
@@ -54,6 +56,7 @@ py3.extension_module(
   'cy_ising', _cy_ising,
   include_directories: [inc_np,inc_mc_lib],
   dependencies : py3_dep,
+  cpp_args: [numpy_nodepr_api],
   install: true,
   subdir: 'examples',
 )

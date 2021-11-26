@@ -11,6 +11,7 @@ py3.extension_module(
   'rndm', _rndm_cpp,
   include_directories: inc_np,
   dependencies : py3_dep,
+  cpp_args: [numpy_nodepr_api],
   install: true,
   subdir: 'mc_lib'
 )
