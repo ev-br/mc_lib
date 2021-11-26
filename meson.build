@@ -4,7 +4,7 @@
 project(
   'mc_lib',
   ['cpp', 'cython'],
-  default_options : ['warning_level=3'],
+  default_options : ['warning_level=3', 'buildtype=debugoptimized'],
   version: '0.3',
   license: 'BSD-2',
   meson_version: '>= 0.54',
