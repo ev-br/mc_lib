@@ -69,6 +69,10 @@ py3.extension_module(
 
 ######## cy_poisson extension ####################
 
+# Set up linking with npymath and npyrandom libraries.
+# this is done following https://numpy.org/devdocs/reference/random/examples/cython/extending_distributions.pyx.html
+# and https://numpy.org/devdocs/reference/random/examples/cython/setup.py.html
+
 npymath_path = incdir_numpy / '..' / 'lib'
 npymath_lib = meson.get_compiler('cpp').find_library('npymath', dirs: npymath_path)
 npyrandom_path = incdir_numpy / '..' / '..' / 'random' / 'lib'
