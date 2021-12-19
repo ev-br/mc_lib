@@ -87,6 +87,7 @@ py3.extension_module(
   'cy_poisson', _cy_poisson,
   include_directories: [inc_np, npymath_path, npyrandom_path, inc_mc_lib],
   dependencies : [py3_dep, npymath_lib, npyrandom_lib],
+  cpp_args: [numpy_nodepr_api],
   install: true,
   subdir: 'examples',
 )
