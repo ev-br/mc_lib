@@ -22,5 +22,10 @@ ext = Extension("cy_ising", ["cy_ising.pyx"],
                 extra_compile_args=extra_compile_args,
                 )
 
-setup(ext_modules=[ext],
+ext_cl = Extension("cy_ising_cluster", ["cy_ising_cluster.pyx"],
+                   include_dirs = [numpy.get_include(),
+                                   mc_lib.get_include()],
+                   language='c++',)
+
+setup(ext_modules=[ext, ext_cl],
       cmdclass = {'build_ext': build_ext})
