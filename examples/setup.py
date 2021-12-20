@@ -25,10 +25,12 @@ ext = Extension("cy_ising", ["cy_ising.pyx"],
 ext_cl = Extension("cy_ising_cluster", ["cy_ising_cluster.pyx"],
                    include_dirs = [numpy.get_include(),
                                    mc_lib.get_include()],
+                   extra_compile_args=extra_compile_args,
                    language='c++',)
 
 ext_en = Extension("exact_ising", ["exact_ising.pyx"],
                    include_dirs = [numpy.get_include()],
+                   extra_compile_args=extra_compile_args,
                    language='c++',)
 
 setup(ext_modules=[ext, ext_cl, ext_en],
