@@ -94,3 +94,21 @@ py3.extension_module(
   subdir: 'examples',
 )
 
+
+######## cluster_ising extension ####################
+# Compile .cpp file
+_cy_cluster = custom_target('cy_ising_cluster_cpp',
+  output : 'cy_ising_cluster.cpp',
+  input : 'cy_ising_cluster.pyx',
+  command : [cython, '--cplus', '-3', '--fast-fail', '@INPUT@', '-o', '@OUTPUT@']
+)
+
+# Compile .so file
+py3.extension_module(
+  'cy_ising_cluster', _cy_cluster,
+  include_directories: [inc_np, inc_mc_lib],
+  dependencies : [py3_dep, ],
+  cpp_args: [numpy_nodepr_api],
+  install: true,
+  subdir: 'examples',
+)
