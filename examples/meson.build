@@ -45,10 +45,10 @@ incdir_mc_lib = run_command(py3,
 # Create a future dependency to mc_lib by its path
 inc_mc_lib = include_directories(incdir_mc_lib)
 
+# suppress "NumPy deprecated API" build noise
 numpy_nodepr_api = '-DNPY_NO_DEPRECATED_API=NPY_1_9_API_VERSION'
 
 ######## cy_ising extension ####################
-
 # Compile .cpp file
 _cy_ising = custom_target('cy_ising_cpp',
   output : 'cy_ising.cpp',
@@ -68,7 +68,6 @@ py3.extension_module(
 
 
 ######## cy_poisson extension ####################
-
 # Set up linking with npymath and npyrandom libraries.
 # this is done following https://numpy.org/devdocs/reference/random/examples/cython/extending_distributions.pyx.html
 # and https://numpy.org/devdocs/reference/random/examples/cython/setup.py.html
@@ -77,7 +76,6 @@ npymath_path = incdir_numpy / '..' / 'lib'
 npymath_lib = meson.get_compiler('cpp').find_library('npymath', dirs: npymath_path)
 npyrandom_path = incdir_numpy / '..' / '..' / 'random' / 'lib'
 npyrandom_lib = meson.get_compiler('cpp').find_library('npyrandom', dirs: npyrandom_path)
-
 
 # Compile .cpp file
 _cy_poisson = custom_target('cy_poisson_cpp',
