@@ -27,5 +27,9 @@ ext_cl = Extension("cy_ising_cluster", ["cy_ising_cluster.pyx"],
                                    mc_lib.get_include()],
                    language='c++',)
 
-setup(ext_modules=[ext, ext_cl],
+ext_en = Extension("exact_ising", ["exact_ising.pyx"],
+                   include_dirs = [numpy.get_include()],
+                   language='c++',)
+
+setup(ext_modules=[ext, ext_cl, ext_en],
       cmdclass = {'build_ext': build_ext})
