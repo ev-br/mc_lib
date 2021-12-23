@@ -24,3 +24,10 @@ cdef class RealObservable():
 
     cpdef void add_measurement(self, double value)
 
+
+# needed to work around cython not understanding std::tuple
+cdef extern from "_observable/observable.h" namespace "mc_stats":
+    void trampoline_mrg(const ScalarObservable[double]& obs,
+                        vector[double] v_av,
+                        vector[double] v_err,
+                        vector[double] v_size)
