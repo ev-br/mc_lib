@@ -256,11 +256,11 @@ def simulate(long[:, ::1] neighbors,
         
         # measurement
         av_en += energy(spins, neighbors) / L
-        mag_sq = (magnetization(spins) / L) ** 2
+        mag_sq = magnetization(spins) ** 2
         Z += 1
         ene.add_measurement(energy(spins, neighbors) / L)
-        mag2.add_measurement(mag_sq)
-        mag4.add_measurement(mag_sq**2)
+        mag2.add_measurement(mag_sq / L)
+        mag4.add_measurement(mag_sq**2 / L)
         
         # energy samples
         if do_intermediate_measure == 1 and sweep % sampl_frequency == 0:
