@@ -20,5 +20,14 @@ for (size_t j=0; j < 10000 ; ++j) {
 
 std::cout << obs.mean() << std::boolalpha << "  " << obs.converged()<<"\n";
 
+
+mc_stats::ScalarObservable<double> obs1, obs2;
+obs1 << 1.0;
+
+obs2 = obs1;
+obs1 << 3.0;
+
+std::cout << obs1.mean() << " " << obs2.mean() << std::endl;
+
 }
 
