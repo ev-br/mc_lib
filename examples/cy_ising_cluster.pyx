@@ -256,7 +256,7 @@ def simulate(long[:, ::1] neighbors,
         
         # measurement
         av_en += energy(spins, neighbors) / L
-        mag_sq = (magnetization(spins) / L) ** 2
+        mag_sq = (magnetization(spins)/L) ** 2
         Z += 1
         ene.add_measurement(energy(spins, neighbors) / L)
         mag2.add_measurement(mag_sq)
