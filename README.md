@@ -2,7 +2,7 @@
 
 [![pip(Linux&MacOS)](https://github.com/ev-br/mc_lib/actions/workflows/pip_ubuntu_macos.yml/badge.svg)](https://github.com/ev-br/mc_lib/actions/workflows/pip_ubuntu_macos.yml/)
 [![meson(Linux & MacOS)](https://github.com/ev-br/mc_lib/actions/workflows/dev_ubuntu_macos.yml/badge.svg)](https://github.com/ev-br/mc_lib/actions/workflows/dev_ubuntu_macos.yml/)
-[![meson(Windows)](https://github.com/ev-br/mc_lib/actions/workflows/dev_windows.yml/badge.svg)](https://github.com/ev-br/mc_lib/actions/workflows/dev_windows.yml/)
+[![meson(Windows)](https://github.com/ev-br/mc_lib/actions/workflows/windows.yml/badge.svg)](https://github.com/ev-br/mc_lib/actions/workflows/windows.yml/)
 [![license](http://img.shields.io/badge/license-BSD-blue.svg?style=flat)](https://github.com/ev-br/mc_lib/blob/master/LICENSE)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5169027.svg)](https://doi.org/10.5281/zenodo.5169027)
 
