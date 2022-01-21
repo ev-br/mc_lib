@@ -45,7 +45,7 @@ $ python -m pip install .
 ### Manual build with `meson`
 
 This is needed if you plan to develop the library. First, get `meson` itself,
-together with other build dependecies:
+together with other build dependencies:
 
 ```
 $ python -m pip install -r requirements.txt
