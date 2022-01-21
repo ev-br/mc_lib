@@ -44,12 +44,10 @@ $ python -m pip install .
 
 ### Manual build with `meson`
 
-This is needed if you plan to develop the library. First, get the latest `meson`
-snapshot (we hope this is temporary and we'll be able to use a stable version
-once meson 0.60 is released) and other required packages:
+This is needed if you plan to develop the library. First, get `meson` itself,
+together with other build dependecies:
 
 ```
-$ python -m pip install git+https://github.com/mesonbuild/meson.git@master
 $ python -m pip install -r requirements.txt
 ```
 
