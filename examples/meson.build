@@ -2,7 +2,7 @@
 project(
   'mc_lib_examples',
   ['cpp', 'cython'],
-  default_options : ['warning_level=3'],
+  default_options : ['warning_level=3', 'buildtype=debugoptimized'],
   meson_version: '>= 0.54',
 )
 
