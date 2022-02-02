@@ -3,14 +3,17 @@ import numpy as np
 
 from . import _cubic
 from . import _triang
+from . import _square
     
 known_connections = {}
 known_connections.update(_cubic.KNOWN_CONNECTIONS)
 known_connections.update(_triang.KNOWN_CONNECTIONS)
+known_connections.update(_square.KNOWN_CONNECTIONS)
 
 known_dimensions = {}
 known_dimensions.update(_cubic.DIMENSIONS)
 known_dimensions.update(_triang.DIMENSIONS)
+known_dimensions.update(_square.DIMENSIONS)
 
 
 def get_neighbors_selector(kind):
