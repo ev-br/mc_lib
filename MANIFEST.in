@@ -1,5 +1,0 @@
-include *.md
-include *.py
-recursive-include mc_lib *.py *.pyx *.pxd
-recursive-include tools *.py
-include LICENSE
