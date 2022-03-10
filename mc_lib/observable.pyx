@@ -33,6 +33,11 @@ cdef class RealObservable():
     def Z_b(self):
         return self._obs.Z_b()
 
+    def copy(self):
+        cdef RealObservable r = RealObservable()
+        r._obs = self._obs
+        return r
+
     cpdef void add_measurement(self, double value):
         self._obs << value
 

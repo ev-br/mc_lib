@@ -9,6 +9,7 @@ cdef extern from "_observable/observable.h" namespace "mc_stats":
         ScalarObservable(size_t b_n_max)   # FIXME: how to use from py/cy?
         void from_blocks(vector[T] blocks, size_t Z_b)
 
+        ScalarObservable[T] operator=(const ScalarObservable[T]& val)
         void operator<<(T value)
         T mean() const
         T errorbar() const
