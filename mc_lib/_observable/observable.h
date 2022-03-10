@@ -43,6 +43,7 @@ public:
     void from_blocks(const std::vector<T>& blocks, size_t Z_b);
 
     void operator<<(T x);    // add a measurement
+    ScalarObservable& operator=(const ScalarObservable& val);
     T mean() const;
     T errorbar() const;
     bool converged() const;
@@ -90,6 +91,17 @@ ScalarObservable<T>::operator<<(T x) {
             _Z_b *= 2;
         }
     }
+}
+
+
+template<typename T>
+ScalarObservable<T>& ScalarObservable<T>::operator=(const ScalarObservable<T>& val){
+    _blocks = val._blocks;
+    _value = val._value;
+    _i_b = val._i_b;
+    _Z_b = val._Z_b;
+    _n_b_max = val._n_b_max;
+    return *this;
 }
 
 

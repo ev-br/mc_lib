@@ -66,3 +66,14 @@ def test_pickling():
         unpickled.add_measurement(j+20)
     assert_allclose(r.mean, unpickled.mean, atol=1e-14)
 
+
+def test_copying():
+    r1 = RealObservable()
+    r1.add_measurement(1.0)
+
+    r2 = r1.copy()
+    r2.add_measurement(3.0)
+
+    assert_allclose(r1.mean, 1, atol=1e-15)
+    assert_allclose(r2.mean, 2, atol=1e-15)
+
