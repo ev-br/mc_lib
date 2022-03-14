@@ -67,19 +67,13 @@ $ meson setup build --prefix=$PWD/installdir
 $ meson install -C build
 ```
 
-(During development, in some circumstances, you may need to to use
-`setup` with a `--wipe` flag to fully rebuild package or `--reconfigure` to
-update the current build. Normally, this should not be needed, and if it is,
-it's a bug. Please report it by opening an issue at
-https://github.com/ev-br/mc_lib/issues.)
-
 Finally, make the `installdir/` visible to python:
 
 ```
 $ export PYTHONPATH=$PWD/installdir/lib/python{Your python version}/site-packages
 ```
 
-Now the install is usable and tests should pass:
+Now the installation is usable and tests should pass:
 
 ```
 $ pytest mc_lib -v --pyargs
