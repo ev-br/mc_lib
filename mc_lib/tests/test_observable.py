@@ -1,4 +1,5 @@
 import pickle
+import h5py
 
 import numpy as np
 from numpy.testing import assert_allclose, assert_equal
@@ -77,3 +78,18 @@ def test_copying():
     assert_allclose(r1.mean, 1, atol=1e-15)
     assert_allclose(r2.mean, 2, atol=1e-15)
 
+def test_hdf5():
+    a = RealObservable()
+    for j in range(20):
+        a.add_measurement(j)
+
+    with h5py.File('observable.hdf5', 'w') as f:
+        write_observable_hdf5(a, f)
+    with h5py.File('observable.hdf5', 'r') as f:
+        b = read_observable_hdf5(f)
+    assert_allclose(a.mean, b.mean, atol=1e-14)
+    
+    for j in range(10, 30):
+        a.add_measurement(j)
+        b.add_measurement(j)
+    assert_allclose(a.mean, b.mean, atol=1e-14)
