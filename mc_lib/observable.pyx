@@ -6,7 +6,7 @@
 import numpy as np
 try:
    import h5py
-Except ImportError:
+except ImportError:
    pass
 
 from .observable cimport ScalarObservable
