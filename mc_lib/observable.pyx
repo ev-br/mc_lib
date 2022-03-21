@@ -4,7 +4,10 @@
 #from libcpp.vector cimport vector
 
 import numpy as np
-import h5py
+try:
+   import h5py
+Except ImportError:
+   pass
 
 from .observable cimport ScalarObservable
 from .observable cimport trampoline_mrg
@@ -90,7 +93,8 @@ def block_stats(RealObservable obs):
 def write_observable_hdf5(obs, group):
     """
     Save RealObservable in hdf5 group
-    creates two datests:
+
+    Creates two datests:
     blocs (float) - dataset with values in closed blocks
     Z_b (int) - dataset with single number of measurements in blocks
     

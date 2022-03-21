@@ -1,5 +1,10 @@
 import pickle
-import h5py
+import pytest
+try:
+    import h5py
+    HAVE_H5PY = True
+except ImportError:
+    HAVE_H5PY = False
 
 import numpy as np
 from numpy.testing import assert_allclose, assert_equal
@@ -78,6 +83,7 @@ def test_copying():
     assert_allclose(r1.mean, 1, atol=1e-15)
     assert_allclose(r2.mean, 2, atol=1e-15)
 
+@pytest.mark.skipif(not HAVE_H5PY, reason="requires h5py package")
 def test_hdf5():
     a = RealObservable()
     for j in range(20):
