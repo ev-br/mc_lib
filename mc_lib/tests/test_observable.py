@@ -2,6 +2,7 @@ import pickle
 import pytest
 try:
     import h5py
+    from mc_lib.observable import write_observable_hdf5, read_observable_hdf5
     HAVE_H5PY = True
 except ImportError:
     HAVE_H5PY = False
