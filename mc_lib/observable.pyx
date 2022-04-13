@@ -83,9 +83,10 @@ def block_stats(RealObservable obs):
         arr[j] = (v_av[j], v_err[j], v_size[j])
     return arr
 
+
 def write_observable_hdf5(obs, group):
     """
-    Save RealObservable in hdf5 group
+    Save RealObservable into an hdf5 group.
 
     Creates two datests:
     blocs (float) - dataset with values in closed blocks
@@ -94,7 +95,7 @@ def write_observable_hdf5(obs, group):
     Parameters
     ----------
     obs : RealObservable
-        observabl that will be written
+        observable that will be written
 
     group : Group object
         group where observable will be written
@@ -103,6 +104,7 @@ def write_observable_hdf5(obs, group):
     blocks, z = obs.__getstate__()
     Z_b[0] = z
     group.create_dataset(f'blocks', data=blocks)
+
 
 def read_observable_hdf5(group):
     """Read RealObservable from hdf5 group"""
