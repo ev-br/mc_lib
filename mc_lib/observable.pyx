@@ -1,13 +1,6 @@
 # cython: language_level=3
 
-# hack to make cythonize detect c++
-#from libcpp.vector cimport vector
-
 import numpy as np
-try:
-   import h5py
-except ImportError:
-   pass
 
 from .observable cimport ScalarObservable
 from .observable cimport trampoline_mrg
